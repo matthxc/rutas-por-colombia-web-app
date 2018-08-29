@@ -1,0 +1,97 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the header of the site/application.
+// -----------------------------------------------------------------------------
+header {
+  background-color: rgba($mid-grey, 0.6);
+}
+
+//Navbar
+.ui.segment.navbar-container {
+  position: relative;
+  z-index: 999;
+  background: white;
+}
+
+.navbar.main-nav {
+  display: flex;
+  flex-flow: row;
+  align-items: stretch;
+  justify-content: stretch;
+  position: relative;
+  >* {
+    flex: 1 auto;
+  }
+  > :first-child {
+    flex: 1 1 100%;
+  }
+  > :last-child {
+    flex: 1 1 100%;
+  }
+  .brand-logo {
+    min-width: 18em;
+    margin-bottom: -3em;
+  }
+}
+
+.navbar-nav {
+  list-style: none;
+  margin: 0;
+  padding: 1em 0;
+  display: flex;
+  flex-flow: row;
+  align-items: stretch;
+  justify-content: space-between;
+  .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    color: white;
+    padding: 0.4em 0;
+    >a,
+    >span,
+    >div>a {
+      padding: 0 2em;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1em;
+      height: 100%;
+      color: inherit;
+      font-weight: 400;
+      align-self: center;
+      position: relative;
+      &:after {
+        content: "";
+        border-radius: 50%;
+        display: inline-block;
+        position: absolute;
+        width: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: 0;
+        background-color: cyan;
+        transition: all 0.2s ease;
+      }
+      &.active,
+      &:hover,
+      &:focus,
+      &:active {
+        color: $primary-color;
+        &:after {
+          height: 0.4em;
+          width: 0.4em;
+        }
+      }
+    }
+    &.active,
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: rgba($mid-grey, 0.8);
+    }
+  }
+}
