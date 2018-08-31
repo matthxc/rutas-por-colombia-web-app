@@ -5,12 +5,14 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+
+// Components
+import { Map } from '../Map';
 
 /* eslint-disable react/prefer-stateless-function */
 class HomePage extends React.PureComponent {
   render() {
-    return <div />;
+    return <Map />;
   }
 }
 
