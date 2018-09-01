@@ -5,12 +5,13 @@ import { Map as LeafletMap, TileLayer, ZoomControl } from 'react-leaflet';
 import message from 'antd/lib/message';
 
 // Components
+import RoutingMachine from './RoutingMachine';
 
 class Map extends React.PureComponent {
   state = {
     lat: 4.6758818,
     lng: -74.1535071,
-    zoom: 10,
+    zoom: 12,
   };
 
   componentDidMount = () => {
@@ -36,6 +37,7 @@ class Map extends React.PureComponent {
         zoomControl={false}
       >
         <ZoomControl position="bottomright" />
+        <RoutingMachine locationFrom={{ lat: 4.5980772, lng: -74.0761028 }} locationTo={{lat: 7.1114611, lng: -73.1172869}} />
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
