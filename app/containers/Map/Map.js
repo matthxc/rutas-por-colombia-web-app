@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map as LeafletMap, TileLayer } from 'react-leaflet';
+import { Map as LeafletMap, TileLayer, ZoomControl } from 'react-leaflet';
 
 // Antd
 import message from 'antd/lib/message';
@@ -33,7 +33,9 @@ class Map extends React.PureComponent {
         center={position}
         zoom={this.state.zoom}
         style={{ height: '100vh', width: '100%' }}
+        zoomControl={false}
       >
+        <ZoomControl position="bottomright" />
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
