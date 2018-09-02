@@ -28,7 +28,7 @@ class RoutingMachine extends MapComponent {
 
   onRouteFound = router => {
     router.on('routesfound', ({ routes }) => {
-      let peajesEnRuta = [];
+      let tollCollectorsOnRoute = [];
       routes[0].coordinates.forEach(({ lat, lng }) => {
         tollCollectors.forEach(coordenada => {
           const from = turf.point([lat, lng]);
@@ -38,12 +38,12 @@ class RoutingMachine extends MapComponent {
           ]);
           const distance = turf.distance(from, to);
           if (distance < 0.05) {
-            peajesEnRuta.push(coordenada);
+            tollCollectorsOnRoute.push(coordenada);
           }
         });
       });
-      peajesEnRuta = uniq(peajesEnRuta);
-      peajesEnRuta.forEach(peaje => {
+      tollCollectorsOnRoute = uniq(tollCollectorsOnRoute);
+      tollCollectorsOnRoute.forEach(peaje => {
         const {
           coordenadas: { lat, lng },
           nombre,
