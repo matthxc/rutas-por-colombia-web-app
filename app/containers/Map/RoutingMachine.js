@@ -31,12 +31,12 @@ class RoutingMachine extends MapComponent {
       let tollCollectorsOnRoute = [];
       routes[0].coordinates.forEach(({ lat, lng }) => {
         tollCollectors.forEach(coordenada => {
-          const from = turf.point([lat, lng]);
-          const to = turf.point([
+          const p1 = turf.point([lat, lng]);
+          const p2 = turf.point([
             coordenada.coordenadas.lat,
             coordenada.coordenadas.lng,
           ]);
-          const distance = turf.distance(from, to);
+          const distance = turf.distance(p1, p2);
           if (distance < 0.05) {
             tollCollectorsOnRoute.push(coordenada);
           }
