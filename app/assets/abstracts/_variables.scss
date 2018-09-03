@@ -17,10 +17,10 @@ monospace !default;
 $text-color: rgb(34, 34, 34) !default;
 /// Main brand color
 /// @type Color
-$primary-color: rgb(0, 255, 255) !default;
+$primary-color: rgb(227, 200, 58) !default;
 /// Secondary brand color
 /// @type Color
-$secondary-color: rgb(102, 102, 102) !default;
+$secondary-color: rgb(44, 44, 44) !default;
 /// Light grey
 /// @type Color
 $light-grey: rgb(237, 237, 237) !default;
@@ -36,7 +36,7 @@ $max-width: 1180px !default;
 /// Breakpoints map
 /// @prop {String} keys - Keys are identifiers mapped to a given length
 /// @prop {Map} values - Values are actual breakpoints expressed in pixels
-$breakpoints: ( 'small': 320px, 'medium': 768px, 'large': 1024px, ) !default;
+$breakpoints: ('small': 320px, 'medium': 768px, 'large': 1024px, ) !default;
 /// Relative or absolute URL where all assets are served from
 /// @type String
 /// @example scss - When using a CDN

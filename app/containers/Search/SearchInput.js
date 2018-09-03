@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import _ from 'lodash';
-import { Icon, Search } from 'semantic-ui-react';
+import { Icon, Search as SearchControl } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Control } from 'leaflet';
 import 'leaflet-control-geocoder';
+
+const Search = styled(SearchControl)`
+  display: inline-block;
+  & > .ui.input > input {
+    border-radius: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: transparent;
+    color: white;
+    border-color: white;
+  }
+  & > .results .result {
+    font-size: 1rem !important;
+  }
+`;
 
 class SearchInput extends Component {
   static propTypes = {
@@ -89,7 +106,7 @@ class SearchInput extends Component {
         results={results}
         value={value}
         noResultsMessage={noResultsMessage}
-        icon={<Icon name="search" />}
+        icon={<Icon name="search" inverted />}
         onKeyPress={e => {
           if (e.key === 'Enter') {
             e.preventDefault();
