@@ -37,7 +37,7 @@ class Map extends React.PureComponent {
         zoomControl={false}
       >
         <ZoomControl position="bottomright" />
-        <RoutingMachine locationFrom={{ lat: 4.5980772, lng: -74.0761028 }} locationTo={{lat: 7.1114611, lng: -73.1172869}} />
+        <RoutingMachine />
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
