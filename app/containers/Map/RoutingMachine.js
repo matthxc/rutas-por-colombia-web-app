@@ -22,6 +22,7 @@ class RoutingMachine extends MapComponent {
   constructor(props) {
     super(props);
     const router = Routing.control({}).addTo(this.props.leaflet.map);
+    router.hide();
     this.state = { router };
     this.onRouteFound(router);
   }

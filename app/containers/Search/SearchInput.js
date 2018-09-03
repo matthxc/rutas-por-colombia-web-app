@@ -89,7 +89,7 @@ class SearchInput extends Component {
         results={results}
         value={value}
         noResultsMessage={noResultsMessage}
-        icon={<Icon name="search" size="large" />}
+        icon={<Icon name="search" />}
         onKeyPress={e => {
           if (e.key === 'Enter') {
             e.preventDefault();
