@@ -1,4 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import injectReducer from 'utils/injectReducer';
 import { Map as LeafletMap, TileLayer, ZoomControl } from 'react-leaflet';
 
 // Antd
@@ -7,7 +12,15 @@ import message from 'antd/lib/message';
 // Components
 import RoutingMachine from './RoutingMachine';
 
+// Redux
+import { makeSelectSearch } from '../Search/selectors';
+import { searchReducer } from '../Search/reducer';
+
 class Map extends React.PureComponent {
+  static propTypes = {
+    searchParameters: PropTypes.object.isRequired,
+  };
+
   state = {
     lat: 4.6758818,
     lng: -74.1535071,
@@ -28,6 +41,9 @@ class Map extends React.PureComponent {
   };
 
   render() {
+    const {
+      searchParameters: { locationFrom, locationTo },
+    } = this.props;
     const position = [this.state.lat, this.state.lng];
     return (
       <LeafletMap
@@ -37,7 +53,7 @@ class Map extends React.PureComponent {
         zoomControl={false}
       >
         <ZoomControl position="bottomright" />
-        <RoutingMachine />
+        <RoutingMachine locationFrom={locationFrom} locationTo={locationTo} />
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -47,4 +63,18 @@ class Map extends React.PureComponent {
   }
 }
 
-export default Map;
+const mapStateToProps = createStructuredSelector({
+  searchParameters: makeSelectSearch(),
+});
+
+const withConnect = connect(mapStateToProps);
+
+const withReducer = injectReducer({
+  key: 'searchParameters',
+  reducer: searchReducer,
+});
+
+export default compose(
+  withReducer,
+  withConnect,
+)(Map);

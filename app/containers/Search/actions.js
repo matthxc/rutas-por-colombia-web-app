@@ -4,10 +4,9 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { UPDATE_SEARCH_PARAMETERS } from './constants';
 
-export function defaultAction() {
-  return {
-    type: DEFAULT_ACTION,
-  };
-}
+export const searchRoute = searchParameters => ({
+  type: UPDATE_SEARCH_PARAMETERS,
+  payload: searchParameters,
+});

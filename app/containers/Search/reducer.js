@@ -5,17 +5,21 @@
  */
 
 import { fromJS } from 'immutable';
-import { DEFAULT_ACTION } from './constants';
+import { UPDATE_SEARCH_PARAMETERS } from './constants';
 
-export const initialState = fromJS({});
+export const initialSearchState = fromJS({
+  locationFrom: null,
+  locationTo: null,
+  category: null,
+});
 
-function searchReducer(state = initialState, action) {
+export const searchReducer = (state = initialSearchState, action) => {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case UPDATE_SEARCH_PARAMETERS:
+      return state.merge({
+        ...action.payload,
+      });
     default:
       return state;
   }
-}
-
-export default searchReducer;
+};

@@ -23,9 +23,45 @@ class RoutingMachine extends MapComponent {
     super(props);
     const router = Routing.control({}).addTo(this.props.leaflet.map);
     router.hide();
-    this.state = { router };
     this.onRouteFound(router);
+    this.state = {
+      router,
+      markers: [],
+    };
   }
+
+  componentDidMount = () => {
+    const { locationFrom, locationTo } = this.props;
+    const { router } = this.state;
+    if (!isEmpty(locationFrom) && !isEmpty(locationTo)) {
+      this.initRouting();
+      router.setWaypoints([locationFrom, locationTo]);
+    }
+  };
+
+  componentDidUpdate = ({
+    locationFrom: oldLocationFrom,
+    locationTo: oldLocationTo,
+  }) => {
+    const { locationFrom, locationTo } = this.props;
+    const { router } = this.state;
+    if (!isEmpty(locationFrom) && !isEmpty(locationTo)) {
+      if (
+        !isEqual(oldLocationFrom, locationFrom) ||
+        !isEqual(oldLocationTo, locationTo)
+      ) {
+        this.initRouting();
+        router.setWaypoints([locationFrom, locationTo]);
+      }
+    }
+  };
+
+  initRouting = () => {
+    const { markers } = this.state;
+    markers.forEach(mark => {
+      this.props.leaflet.map.removeLayer(mark);
+    });
+  };
 
   onRouteFound = router => {
     router.on('routesfound', ({ routes }) => {
@@ -43,6 +79,7 @@ class RoutingMachine extends MapComponent {
           }
         });
       });
+      const markers = [];
       tollCollectorsOnRoute = uniq(tollCollectorsOnRoute);
       tollCollectorsOnRoute.forEach(peaje => {
         const {
@@ -61,27 +98,10 @@ class RoutingMachine extends MapComponent {
           <h4>Grúa: ${grua}</h4>
         `,
         );
+        markers.push(mark);
       });
+      this.setState({ markers });
     });
-  };
-
-  componentDidMount = () => {
-    const { locationFrom, locationTo } = this.props;
-    if (!isEmpty(locationFrom) && !isEmpty(locationTo)) {
-      this.state.router.setWaypoints([locationFrom, locationTo]);
-    }
-  };
-
-  componentDidUpdate = ({ oldLocationFrom, oldLocationTo }) => {
-    const { locationFrom, locationTo } = this.props;
-    if (!isEmpty(locationFrom) && !isEmpty(locationTo)) {
-      if (
-        !isEqual(oldLocationFrom, locationFrom) ||
-        !isEqual(oldLocationTo, locationTo)
-      ) {
-        this.state.router.setWaypoints([locationFrom, locationTo]);
-      }
-    }
   };
 
   render() {

@@ -19,6 +19,7 @@ const Search = styled(SearchControl)`
   }
   & > .results .result {
     font-size: 1rem !important;
+    text-align: left;
   }
 `;
 

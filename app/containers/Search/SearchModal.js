@@ -1,14 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 // Antd
 import Modal from 'antd/lib/modal';
 import 'antd/lib/modal/style/index.css';
 import Button from 'antd/lib/button';
 import 'antd/lib/button/style/index.css';
+import message from 'antd/lib/message';
 
 // Semantic
-import { Segment, Header } from 'semantic-ui-react';
+import { Segment, Header, Select } from 'semantic-ui-react';
+
+// Redux
+import { searchRoute } from './actions';
 
 // Components
 import SearchInput from './SearchInput';
@@ -22,13 +29,35 @@ const ContainerModal = styled(Modal)`
   }
 `;
 
+const Selector = styled(Select)`
+  &.ui.selection.dropdown {
+    display: inline-block;
+    border-radius: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: transparent;
+    color: white;
+    border-color: white;
+  }
+`;
+
+const categoryOptions = [
+  { key: 0, value: 0, text: 'I' },
+  { key: 1, value: 1, text: 'II' },
+  { key: 2, value: 2, text: 'III' },
+  { key: 3, value: 3, text: 'IV' },
+  { key: 4, value: 4, text: 'V' },
+];
+
 class SearchModal extends React.PureComponent {
-  state = {
-    visible: false,
+  static propTypes = {
+    searchRoute: PropTypes.func.isRequired,
   };
 
-  initialState = {
+  state = {
     visible: false,
+    categoryValue: 0,
   };
 
   showModal = () => {
@@ -43,14 +72,35 @@ class SearchModal extends React.PureComponent {
     });
   };
 
+  handleCategoryChange = (e, { value }) => {
+    this.setState({ categoryValue: value });
+  };
+
+  searchRoute = () => {
+    const { categoryValue, locationFrom, locationTo } = this.state;
+    if (!isEmpty(locationFrom) && !isEmpty(locationTo)) {
+      this.closeModal();
+      this.props.searchRoute({
+        locationFrom,
+        locationTo,
+        category: categoryValue,
+      });
+    } else {
+      message.error(
+        'Recuerda llenar todos los campos antes de hacer la búsqueda',
+        4,
+      );
+    }
+  };
+
   render() {
-    const { visible } = this.state;
+    const { visible, categoryValue } = this.state;
     return (
       <div
         style={{ position: 'fixed', top: '20px', right: '20px', zIndex: '999' }}
       >
         <Button type="primary" onClick={this.showModal}>
-          Buscar ruta
+          Nueva búsqueda
         </Button>
         <ContainerModal
           visible={visible}
@@ -65,7 +115,7 @@ class SearchModal extends React.PureComponent {
               <span>Quiero conocer la ruta de{`  `}</span>
               <SearchInput
                 onSelect={coordinates => {
-                  console.log(coordinates);
+                  this.setState({ locationFrom: coordinates });
                 }}
               />
               <span>
@@ -73,11 +123,24 @@ class SearchModal extends React.PureComponent {
               </span>
               <SearchInput
                 onSelect={coordinates => {
-                  console.log(coordinates);
+                  this.setState({ locationTo: coordinates });
                 }}
               />
-              <span>{`  `}en un vehículo categoría I</span>
+              <span>
+                {`  `}, en un vehículo categoría{`  `}
+              </span>
+              <Selector
+                options={categoryOptions}
+                compact
+                onChange={this.handleCategoryChange}
+                value={categoryValue}
+              />
             </Header>
+          </Segment>
+          <Segment basic textAlign="center">
+            <Button type="primary" onClick={this.searchRoute} size="large">
+              Buscar ruta
+            </Button>
           </Segment>
         </ContainerModal>
       </div>
@@ -85,4 +148,11 @@ class SearchModal extends React.PureComponent {
   }
 }
 
-export default SearchModal;
+const mapDispatchToProps = {
+  searchRoute,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(SearchModal);
