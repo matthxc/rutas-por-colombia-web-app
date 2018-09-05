@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Routing, marker } from 'leaflet';
-import 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
 import { withLeaflet, MapComponent, LeafletProvider } from 'react-leaflet';
-import turf from 'turf';
-import { uniq, isEmpty, isEqual } from 'lodash';
-import tollCollectors from './tollCollectors';
+import { isEmpty, isEqual } from 'lodash';
+import axios from 'axios';
+import message from 'antd/lib/message';
 
 class RoutingMachine extends MapComponent {
   static defaultProps = {
@@ -64,43 +63,48 @@ class RoutingMachine extends MapComponent {
   };
 
   onRouteFound = router => {
-    router.on('routesfound', ({ routes }) => {
-      let tollCollectorsOnRoute = [];
-      routes[0].coordinates.forEach(({ lat, lng }) => {
-        tollCollectors.forEach(coordenada => {
-          const p1 = turf.point([lat, lng]);
-          const p2 = turf.point([
-            coordenada.coordenadas.lat,
-            coordenada.coordenadas.lng,
-          ]);
-          const distance = turf.distance(p1, p2);
-          if (distance < 0.05) {
-            tollCollectorsOnRoute.push(coordenada);
-          }
-        });
-      });
-      const markers = [];
-      tollCollectorsOnRoute = uniq(tollCollectorsOnRoute);
-      tollCollectorsOnRoute.forEach(peaje => {
-        const {
-          coordenadas: { lat, lng },
-          nombre,
-          departamento,
-          telefono,
-          grua,
-        } = peaje;
-        const mark = marker([lat, lng]).addTo(this.props.leaflet.map);
-        mark.bindPopup(
-          `
+    router.on('routesfound', async ({ routes }) => {
+      const loading = message.loading('Calculando ruta...', 0);
+      try {
+        const { data: tollCollectorsOnRoute } = await axios.post(
+          'http://localhost:1337/findTollCollectors',
+          {
+            routes: routes[0].coordinates,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        const markers = [];
+        tollCollectorsOnRoute.forEach(peaje => {
+          const {
+            coordenadas: { lat, lng },
+            nombre,
+            departamento,
+            telefono,
+            grua,
+          } = peaje;
+          const mark = marker([lat, lng]).addTo(this.props.leaflet.map);
+          mark.bindPopup(
+            `
           <h4>Nombre: ${nombre}</h4>
           <h4>Departamento: ${departamento}</h4>
           <h4>Teléfono: ${telefono}</h4>
           <h4>Grúa: ${grua}</h4>
         `,
+          );
+          markers.push(mark);
+        });
+        this.setState({ markers });
+        loading();
+      } catch (error) {
+        console.log(error);
+        message.error(
+          'Hubo un error al buscar la ruta. Por favor intenta nuevamente.',
         );
-        markers.push(mark);
-      });
-      this.setState({ markers });
+      }
     });
   };
 
