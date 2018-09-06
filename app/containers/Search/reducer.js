@@ -10,7 +10,7 @@ import { UPDATE_SEARCH_PARAMETERS } from './constants';
 export const initialSearchState = fromJS({
   locationFrom: null,
   locationTo: null,
-  category: null,
+  category: 0,
 });
 
 export const searchReducer = (state = initialSearchState, action) => {

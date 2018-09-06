@@ -11,11 +11,13 @@ class RoutingMachine extends MapComponent {
   static defaultProps = {
     locationFrom: {},
     locationTo: {},
+    category: 0,
   };
 
   static propTypes = {
     locationFrom: PropTypes.object,
     locationTo: PropTypes.object,
+    category: PropTypes.number,
   };
 
   constructor(props) {
@@ -65,11 +67,15 @@ class RoutingMachine extends MapComponent {
   onRouteFound = router => {
     router.on('routesfound', async ({ routes }) => {
       const loading = message.loading('Calculando ruta...', 0);
+      const { category } = this.props;
       try {
-        const { data: tollCollectorsOnRoute } = await axios.post(
+        const {
+          data: { tollCollectorsOnRoute, totalPrice },
+        } = await axios.post(
           'http://localhost:1337/findTollCollectors',
           {
             routes: routes[0].coordinates,
+            category,
           },
           {
             headers: {
@@ -85,6 +91,7 @@ class RoutingMachine extends MapComponent {
             departamento,
             telefono,
             grua,
+            categoria,
           } = peaje;
           const mark = marker([lat, lng]).addTo(this.props.leaflet.map);
           mark.bindPopup(
@@ -93,17 +100,21 @@ class RoutingMachine extends MapComponent {
           <h4>Departamento: ${departamento}</h4>
           <h4>Teléfono: ${telefono}</h4>
           <h4>Grúa: ${grua}</h4>
+          <h4>Precio: ${categoria[category]}</h4>
         `,
           );
           markers.push(mark);
         });
         this.setState({ markers });
-        loading();
+        console.log(totalPrice);
       } catch (error) {
         console.log(error);
         message.error(
           'Hubo un error al buscar la ruta. Por favor intenta nuevamente.',
+          5,
         );
+      } finally {
+        loading();
       }
     });
   };

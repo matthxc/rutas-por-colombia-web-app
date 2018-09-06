@@ -42,7 +42,7 @@ class Map extends React.PureComponent {
 
   render() {
     const {
-      searchParameters: { locationFrom, locationTo },
+      searchParameters: { locationFrom, locationTo, category },
     } = this.props;
     const position = [this.state.lat, this.state.lng];
     return (
@@ -53,7 +53,11 @@ class Map extends React.PureComponent {
         zoomControl={false}
       >
         <ZoomControl position="bottomright" />
-        <RoutingMachine locationFrom={locationFrom} locationTo={locationTo} />
+        <RoutingMachine
+          locationFrom={locationFrom}
+          locationTo={locationTo}
+          category={category}
+        />
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
