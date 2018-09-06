@@ -68,14 +68,25 @@ class RoutingMachine extends MapComponent {
     router.on('routesfound', async ({ routes }) => {
       const loading = message.loading('Calculando ruta...', 0);
       const { category } = this.props;
+      const {
+        coordinates,
+        summary: { totalDistance, totalTime },
+      } = routes[0];
       try {
         const {
-          data: { tollCollectorsOnRoute, totalPrice },
+          data: {
+            tollCollectorsOnRoute,
+            totalPrice,
+            durationString,
+            totalDistanceString,
+          },
         } = await axios.post(
           'http://localhost:1337/findTollCollectors',
           {
-            routes: routes[0].coordinates,
+            routes: coordinates,
             category,
+            totalDistance,
+            totalTime,
           },
           {
             headers: {
@@ -106,7 +117,7 @@ class RoutingMachine extends MapComponent {
           markers.push(mark);
         });
         this.setState({ markers });
-        console.log(totalPrice);
+        console.log(totalPrice, durationString, totalDistanceString);
       } catch (error) {
         console.log(error);
         message.error(
