@@ -15,12 +15,15 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
+import Header from 'containers/Header';
+
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 export default function App() {
   return (
     <div>
+      <Header />
       <Route
         render={({ location }) => (
           <TransitionGroup>

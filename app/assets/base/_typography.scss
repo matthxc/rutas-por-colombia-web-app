@@ -7,7 +7,9 @@ button,
 input,
 optgroup,
 select,
-textarea {
+textarea,
+.ui,
+.ui.header {
   color: $text-color;
-  font-family: $text-font-stack;
+  font-family: $text-font-stack !important;
 }

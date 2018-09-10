@@ -49,7 +49,7 @@ class Map extends React.PureComponent {
       <LeafletMap
         center={position}
         zoom={this.state.zoom}
-        style={{ height: '100vh', width: '100%' }}
+        style={{ height: '100%', width: '100%' }}
         zoomControl={false}
       >
         <ZoomControl position="bottomright" />

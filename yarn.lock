@@ -9785,6 +9785,12 @@ semantic-ui-css@2.3.3:
   dependencies:
     jquery x.*
 
+semantic-ui-less@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/semantic-ui-less/-/semantic-ui-less-2.3.3.tgz#5e2d7763fbd9526ed6d84001dfd5668e28763ba4"
+  dependencies:
+    jquery x.*
+
 semantic-ui-react@0.82.3:
   version "0.82.3"
   resolved "https://registry.yarnpkg.com/semantic-ui-react/-/semantic-ui-react-0.82.3.tgz#b7940c2344a1b9b12659b284e00baf907186b724"

@@ -20,6 +20,13 @@ import { searchRoute } from './actions';
 // Components
 import SearchInput from './SearchInput';
 
+const MainContainer = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+`;
+
 const ContainerModal = styled(Modal)`
   & .ant-modal-body {
     background-color: #303030;
@@ -96,9 +103,7 @@ class SearchModal extends React.PureComponent {
   render() {
     const { visible, categoryValue } = this.state;
     return (
-      <div
-        style={{ position: 'fixed', top: '20px', right: '20px', zIndex: '999' }}
-      >
+      <MainContainer>
         <Button type="primary" onClick={this.showModal}>
           Nueva búsqueda
         </Button>
@@ -143,7 +148,7 @@ class SearchModal extends React.PureComponent {
             </Button>
           </Segment>
         </ContainerModal>
-      </div>
+      </MainContainer>
     );
   }
 }
