@@ -1,8 +1,13 @@
 /**
  * Basic typography style for copy text
  */
-
-body {
+body,
+html,
+button,
+input,
+optgroup,
+select,
+textarea {
   color: $text-color;
   font-family: $text-font-stack;
 }

@@ -6,9 +6,9 @@ import isEmpty from 'lodash/isEmpty';
 
 // Antd
 import Modal from 'antd/lib/modal';
-import 'antd/lib/modal/style/index.css';
+import 'antd/lib/modal/style/index.less';
 import Button from 'antd/lib/button';
-import 'antd/lib/button/style/index.css';
+import 'antd/lib/button/style/index.less';
 import message from 'antd/lib/message';
 
 // Semantic

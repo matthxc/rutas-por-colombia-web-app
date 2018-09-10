@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 /// Regular font family
 /// @type List
-$text-font-stack: 'Raleway',
+$text-font-stack: 'Montserrat',
 sans-serif !default;
 /// Code (monospace) font family
 /// @type List
@@ -14,13 +14,13 @@ $code-font-stack: 'Courier New',
 monospace !default;
 /// Copy text color
 /// @type Color
-$text-color: rgb(34, 34, 34) !default;
+$text-color: #222222 !default;
 /// Main brand color
 /// @type Color
-$primary-color: rgb(227, 200, 58) !default;
+$primary-color: #e3c83a !default;
 /// Secondary brand color
 /// @type Color
-$secondary-color: rgb(44, 44, 44) !default;
+$secondary-color: #2c2c2c !default;
 /// Light grey
 /// @type Color
 $light-grey: rgb(237, 237, 237) !default;
