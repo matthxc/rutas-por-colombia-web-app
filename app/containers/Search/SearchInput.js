@@ -13,9 +13,16 @@ const Search = styled(SearchControl)`
     border-top: none;
     border-left: none;
     border-right: none;
+    background: transparent;
     background-color: transparent;
     color: white;
     border-color: white;
+    &:focus,
+    &:hover {
+      background: transparent;
+      background-color: transparent;
+      color: white;
+    }
   }
   & > .results .result {
     font-size: 1rem !important;
