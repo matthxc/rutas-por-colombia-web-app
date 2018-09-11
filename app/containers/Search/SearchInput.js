@@ -46,7 +46,7 @@ class SearchInput extends Component {
 
   handleResultSelect = (e, { result }) => {
     this.setState({ value: result.title });
-    this.props.onSelect(result.coordinates);
+    this.props.onSelect(result);
   };
 
   handleSearchChange = async (e, value) => {

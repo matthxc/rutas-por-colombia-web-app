@@ -24,6 +24,7 @@ import { searchRoute } from './actions';
 
 // Components
 import SearchInput from './SearchInput';
+import ResultsBox from './ResultsBox';
 
 const MainContainer = styled.div`
   position: absolute;
@@ -54,13 +55,6 @@ const Selector = styled(Select)`
     color: white;
     border-color: white;
   }
-`;
-
-const ContainerBox = styled.div`
-  position: relative;
-  width: 100%;
-  background-color: white;
-  padding: 2em;
 `;
 
 const categoryOptions = [
@@ -103,8 +97,8 @@ class SearchModal extends React.PureComponent {
     if (!isEmpty(locationFrom) && !isEmpty(locationTo)) {
       this.closeModal();
       this.props.searchRoute({
-        locationFrom,
-        locationTo,
+        locationFrom: locationFrom.coordinates,
+        locationTo: locationTo.coordinates,
         category: categoryValue,
       });
     } else {
@@ -116,10 +110,16 @@ class SearchModal extends React.PureComponent {
   };
 
   render() {
-    const { visible, categoryValue } = this.state;
+    const { visible, categoryValue, locationFrom, locationTo } = this.state;
     const { routeResults } = this.props;
     return (
       <MainContainer>
+        <ResultsBox
+          locationFrom={locationFrom}
+          locationTo={locationTo}
+          category={categoryValue}
+          routeResults={routeResults}
+        />
         <Button type="primary" block onClick={this.showModal}>
           Nueva búsqueda
         </Button>
@@ -135,16 +135,16 @@ class SearchModal extends React.PureComponent {
             <Header as="h2" inverted>
               <span>Quiero conocer la ruta de{`  `}</span>
               <SearchInput
-                onSelect={coordinates => {
-                  this.setState({ locationFrom: coordinates });
+                onSelect={location => {
+                  this.setState({ locationFrom: location });
                 }}
               />
               <span>
                 {`  `}a{`  `}
               </span>
               <SearchInput
-                onSelect={coordinates => {
-                  this.setState({ locationTo: coordinates });
+                onSelect={location => {
+                  this.setState({ locationTo: location });
                 }}
               />
               <span>
