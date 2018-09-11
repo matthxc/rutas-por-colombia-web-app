@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
 
 // Semantic
-import { Header, Grid } from 'semantic-ui-react';
+import { Segment, Header, Grid } from 'semantic-ui-react';
 
 const ContainerBox = styled.div`
   position: relative;
@@ -44,7 +44,7 @@ const ResultsBox = ({
               <Header as="h4" className="no-margin">
                 {distance}
               </Header>
-              <Header as="h6" className="no-margin light">
+              <Header as="h6" className="no-margin regular">
                 DISTANCIA
               </Header>
             </Grid.Column>
@@ -52,7 +52,7 @@ const ResultsBox = ({
               <Header as="h4" className="no-margin">
                 {duration}
               </Header>
-              <Header as="h6" className="no-margin light">
+              <Header as="h6" className="no-margin regular">
                 TIEMPO
               </Header>
             </Grid.Column>
@@ -62,7 +62,7 @@ const ResultsBox = ({
               <Header as="h4" className="no-margin">
                 {tollCollectors}
               </Header>
-              <Header as="h6" className="no-margin light">
+              <Header as="h6" className="no-margin regular">
                 NÚMERO DE PEAJES
               </Header>
             </Grid.Column>
@@ -70,7 +70,7 @@ const ResultsBox = ({
               <Header as="h4" className="no-margin">
                 {totalPrice}
               </Header>
-              <Header as="h6" className="no-margin light">
+              <Header as="h6" className="no-margin regular">
                 VALOR TOTAL
               </Header>
             </Grid.Column>
@@ -81,11 +81,13 @@ const ResultsBox = ({
   }
   return (
     <ContainerBox>
-      <Header as="h4">
-        Rutas por colombia es una forma sencilla de planear los recursos en
-        tiempo y dinero necesarios para viajar por carretera entre dos
-        ubicaciones.
-      </Header>
+      <Segment basic>
+        <Header as="h4" className="regular">
+          Rutas por colombia es una forma sencilla de planear los recursos en
+          tiempo y dinero necesarios para viajar por carretera entre dos
+          ubicaciones.
+        </Header>
+      </Segment>
     </ContainerBox>
   );
 };

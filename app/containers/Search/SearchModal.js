@@ -21,6 +21,7 @@ import { Segment, Header, Select } from 'semantic-ui-react';
 import { makeSelectRouteResults } from '../Map/selectors';
 import { routeResultsReducer } from '../Map/reducer';
 import { searchRoute } from './actions';
+import { resetRouteResults } from '../Map/actions';
 
 // Components
 import SearchInput from './SearchInput';
@@ -69,6 +70,7 @@ class SearchModal extends React.PureComponent {
   static propTypes = {
     searchRoute: PropTypes.func.isRequired,
     routeResults: PropTypes.object.isRequired,
+    resetRouteResults: PropTypes.func.isRequired,
   };
 
   state = {
@@ -77,6 +79,7 @@ class SearchModal extends React.PureComponent {
   };
 
   showModal = () => {
+    this.props.resetRouteResults();
     this.setState({
       visible: true,
     });
@@ -175,6 +178,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = {
   searchRoute,
+  resetRouteResults,
 };
 
 const withConnect = connect(
