@@ -6,6 +6,7 @@ import { withLeaflet, MapComponent, LeafletProvider } from 'react-leaflet';
 import { isEmpty, isEqual } from 'lodash';
 import axios from 'axios';
 import message from 'antd/lib/message';
+import notification from 'antd/lib/notification';
 
 class RoutingMachine extends MapComponent {
   static defaultProps = {
@@ -25,6 +26,7 @@ class RoutingMachine extends MapComponent {
     const router = Routing.control({}).addTo(this.props.leaflet.map);
     router.hide();
     this.onRouteFound(router);
+    this.onRouteError(router);
     this.state = {
       router,
       markers: [],
@@ -126,6 +128,23 @@ class RoutingMachine extends MapComponent {
         );
       } finally {
         loading();
+      }
+    });
+  };
+
+  onRouteError = router => {
+    router.on('routingerror', async ({ error: { target: { response } } }) => {
+      const { code } = JSON.parse(response);
+      if (code === 'NoRoute') {
+        notification.error({
+          message: 'Error',
+          description:
+            'Lo sentimos, no hemos podido encontrar una ruta válida. \n Intenta nuevamente con otras localizaciones.',
+          duration: 0,
+          placement: 'bottomRight',
+        });
+      } else {
+        message.error('Hubo un error inesperado, intenta nuevamente', 5);
       }
     });
   };

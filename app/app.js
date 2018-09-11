@@ -29,6 +29,7 @@ import LanguageProvider from 'containers/LanguageProvider';
 // Import Ant Design Styles
 import '!style-loader!css-loader!resolve-url-loader!sass-loader?sourceMap!./assets/antd.scss';
 import 'antd/lib/message/style/index.less';
+import 'antd/lib/notification/style/index.less';
 
 // Import CSS Semantic Styles
 import 'semantic-ui-css/semantic.min.css';
