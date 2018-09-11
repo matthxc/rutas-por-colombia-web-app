@@ -13,12 +13,14 @@ class RoutingMachine extends MapComponent {
     locationFrom: {},
     locationTo: {},
     category: 0,
+    onRouteResultsFound: () => {},
   };
 
   static propTypes = {
     locationFrom: PropTypes.object,
     locationTo: PropTypes.object,
     category: PropTypes.number,
+    onRouteResultsFound: PropTypes.func,
   };
 
   constructor(props) {
@@ -119,7 +121,12 @@ class RoutingMachine extends MapComponent {
           markers.push(mark);
         });
         this.setState({ markers });
-        console.log(totalPrice, durationString, totalDistanceString);
+        this.props.onRouteResultsFound({
+          totalPrice,
+          duration: durationString,
+          distance: totalDistanceString,
+          tollCollectors: tollCollectorsOnRoute.length,
+        });
       } catch (error) {
         console.log(error);
         message.error(

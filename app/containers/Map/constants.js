@@ -4,4 +4,5 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/Map/DEFAULT_ACTION';
+export const SET_ROUTE_RESULTS = 'SET_ROUTE_RESULTS';
+export const RESET_ROUTE_RESULTS = 'RESET_ROUTE_RESULTS';

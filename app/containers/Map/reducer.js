@@ -5,17 +5,27 @@
  */
 
 import { fromJS } from 'immutable';
-import { DEFAULT_ACTION } from './constants';
+import { SET_ROUTE_RESULTS, RESET_ROUTE_RESULTS } from './constants';
 
-export const initialState = fromJS({});
+export const initialRouteResultsState = fromJS({
+  totalPrice: null,
+  duration: null,
+  distance: null,
+  tollCollectors: null,
+});
 
-function mapReducer(state = initialState, action) {
+export const routeResultsReducer = (
+  state = initialRouteResultsState,
+  action,
+) => {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case SET_ROUTE_RESULTS:
+      return state.merge({
+        ...action.payload,
+      });
+    case RESET_ROUTE_RESULTS:
+      return initialRouteResultsState;
     default:
       return state;
   }
-}
-
-export default mapReducer;
+};

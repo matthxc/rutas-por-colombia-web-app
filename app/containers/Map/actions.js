@@ -4,10 +4,13 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { SET_ROUTE_RESULTS, RESET_ROUTE_RESULTS } from './constants';
 
-export function defaultAction() {
-  return {
-    type: DEFAULT_ACTION,
-  };
-}
+export const setRouteResults = routeResults => ({
+  type: SET_ROUTE_RESULTS,
+  payload: routeResults,
+});
+
+export const resetRouteResults = () => ({
+  type: RESET_ROUTE_RESULTS,
+});

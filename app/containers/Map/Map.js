@@ -15,10 +15,12 @@ import RoutingMachine from './RoutingMachine';
 // Redux
 import { makeSelectSearch } from '../Search/selectors';
 import { searchReducer } from '../Search/reducer';
+import { setRouteResults } from './actions';
 
 class Map extends React.PureComponent {
   static propTypes = {
     searchParameters: PropTypes.object.isRequired,
+    setRouteResults: PropTypes.func.isRequired,
   };
 
   state = {
@@ -40,6 +42,10 @@ class Map extends React.PureComponent {
     }
   };
 
+  onRouteResultsFound = routeResults => {
+    this.props.setRouteResults(routeResults);
+  };
+
   render() {
     const {
       searchParameters: { locationFrom, locationTo, category },
@@ -57,6 +63,7 @@ class Map extends React.PureComponent {
           locationFrom={locationFrom}
           locationTo={locationTo}
           category={category}
+          onRouteResultsFound={this.onRouteResultsFound}
         />
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -71,7 +78,14 @@ const mapStateToProps = createStructuredSelector({
   searchParameters: makeSelectSearch(),
 });
 
-const withConnect = connect(mapStateToProps);
+const mapDispatchToProps = {
+  setRouteResults,
+};
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 const withReducer = injectReducer({
   key: 'searchParameters',

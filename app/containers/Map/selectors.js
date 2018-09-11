@@ -1,22 +1,14 @@
 import { createSelector } from 'reselect';
-import { initialState } from './reducer';
+import { initialRouteResultsState } from './reducer';
 
 /**
  * Direct selector to the map state domain
  */
 
-const selectMapDomain = state => state.get('map', initialState);
+const selectRouteResultsDomain = state =>
+  state.get('routeResults', initialRouteResultsState);
 
-/**
- * Other specific selectors
- */
+const makeSelectRouteResults = () =>
+  createSelector(selectRouteResultsDomain, substate => substate.toJS());
 
-/**
- * Default selector used by Map
- */
-
-const makeSelectMap = () =>
-  createSelector(selectMapDomain, substate => substate.toJS());
-
-export default makeSelectMap;
-export { selectMapDomain };
+export { selectRouteResultsDomain, makeSelectRouteResults };

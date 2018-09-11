@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import injectReducer from 'utils/injectReducer';
+import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 
 // Antd
@@ -15,6 +18,8 @@ import message from 'antd/lib/message';
 import { Segment, Header, Select } from 'semantic-ui-react';
 
 // Redux
+import { makeSelectRouteResults } from '../Map/selectors';
+import { routeResultsReducer } from '../Map/reducer';
 import { searchRoute } from './actions';
 
 // Components
@@ -25,6 +30,8 @@ const MainContainer = styled.div`
   top: 20px;
   right: 20px;
   z-index: 999;
+  width: 100%;
+  max-width: 350px;
 `;
 
 const ContainerModal = styled(Modal)`
@@ -49,6 +56,13 @@ const Selector = styled(Select)`
   }
 `;
 
+const ContainerBox = styled.div`
+  position: relative;
+  width: 100%;
+  background-color: white;
+  padding: 2em;
+`;
+
 const categoryOptions = [
   { key: 0, value: 0, text: 'I' },
   { key: 1, value: 1, text: 'II' },
@@ -60,6 +74,7 @@ const categoryOptions = [
 class SearchModal extends React.PureComponent {
   static propTypes = {
     searchRoute: PropTypes.func.isRequired,
+    routeResults: PropTypes.object.isRequired,
   };
 
   state = {
@@ -102,9 +117,10 @@ class SearchModal extends React.PureComponent {
 
   render() {
     const { visible, categoryValue } = this.state;
+    const { routeResults } = this.props;
     return (
       <MainContainer>
-        <Button type="primary" onClick={this.showModal}>
+        <Button type="primary" block onClick={this.showModal}>
           Nueva búsqueda
         </Button>
         <ContainerModal
@@ -153,11 +169,25 @@ class SearchModal extends React.PureComponent {
   }
 }
 
+const mapStateToProps = createStructuredSelector({
+  routeResults: makeSelectRouteResults(),
+});
+
 const mapDispatchToProps = {
   searchRoute,
 };
 
-export default connect(
-  null,
+const withConnect = connect(
+  mapStateToProps,
   mapDispatchToProps,
+);
+
+const withReducer = injectReducer({
+  key: 'routeResults',
+  reducer: routeResultsReducer,
+});
+
+export default compose(
+  withReducer,
+  withConnect,
 )(SearchModal);
