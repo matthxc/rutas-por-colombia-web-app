@@ -92,9 +92,14 @@ const ResultsBox = ({
   );
 };
 
+ResultsBox.defaultProps = {
+  locationFrom: null,
+  locationTo: null,
+};
+
 ResultsBox.propTypes = {
-  locationFrom: PropTypes.object.isRequired,
-  locationTo: PropTypes.object.isRequired,
+  locationFrom: PropTypes.object,
+  locationTo: PropTypes.object,
   category: PropTypes.number.isRequired,
   routeResults: PropTypes.object.isRequired,
 };
