@@ -68,6 +68,7 @@ class RoutingMachine extends MapComponent {
     });
   };
 
+  /* eslint-disable indent */
   onRouteFound = router => {
     router.on('routesfound', async ({ routes }) => {
       const loading = message.loading('Calculando ruta...', 0);
@@ -109,15 +110,24 @@ class RoutingMachine extends MapComponent {
             categoria,
           } = peaje;
           const mark = marker([lat, lng]).addTo(this.props.leaflet.map);
-          mark.bindPopup(
-            `
-          <h4>Nombre: ${nombre}</h4>
-          <h4>Departamento: ${departamento}</h4>
-          <h4>Teléfono: ${telefono}</h4>
-          <h4>Grúa: ${grua}</h4>
-          <h4>Precio: ${categoria[category]}</h4>
-        `,
-          );
+          const name = nombre
+            ? `<h4>Nombre: <span class="regular">${nombre}</span></h4>`
+            : '';
+          const state = departamento
+            ? `<h4>Departamento: <span class="regular">${departamento}</span></h4>`
+            : '';
+          const phone = telefono
+            ? `<h4>Teléfono: <span class="regular">${telefono}</span></h4>`
+            : '';
+          const car = grua
+            ? `<h4>Grua: <span class="regular">${grua}</span></h4>`
+            : '';
+          const price = categoria[category]
+            ? `<h4>Precio: <span class="regular">${
+                categoria[category]
+              }</span></h4>`
+            : '';
+          mark.bindPopup(name + state + phone + car + price);
           markers.push(mark);
         });
         this.setState({ markers });
