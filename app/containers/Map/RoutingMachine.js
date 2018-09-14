@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Routing, marker } from 'leaflet';
+import { Routing, marker, icon } from 'leaflet';
 import 'leaflet-routing-machine';
 import { withLeaflet, MapComponent, LeafletProvider } from 'react-leaflet';
 import { isEmpty, isEqual } from 'lodash';
 import axios from 'axios';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
+
+import tollIcon from 'images/toll-road.png';
+import tollShadow from 'images/toll-road-shadow.png';
 
 class RoutingMachine extends MapComponent {
   static defaultProps = {
@@ -29,9 +32,21 @@ class RoutingMachine extends MapComponent {
     router.hide();
     this.onRouteFound(router);
     this.onRouteError(router);
+
+    const leafletTollIcon = icon({
+      iconUrl: tollIcon,
+      shadowUrl: tollShadow,
+      iconSize: [32, 32], // size of the icon
+      shadowSize: [32, 9], // size of the shadow
+      iconAnchor: [16, 30], // point of the icon which will correspond to marker's location
+      shadowAnchor: [6, 10], // the same for the shadow
+      popupAnchor: [-6, -28], // point from which the popup should open relative to the iconAnchor
+    });
+    console.log(leafletTollIcon);
     this.state = {
       router,
       markers: [],
+      leafletTollIcon,
     };
   }
 
@@ -71,6 +86,7 @@ class RoutingMachine extends MapComponent {
   /* eslint-disable indent */
   onRouteFound = router => {
     router.on('routesfound', async ({ routes }) => {
+      console.log('running...');
       const loading = message.loading('Calculando ruta...', 0);
       const { category } = this.props;
       const {
@@ -109,7 +125,9 @@ class RoutingMachine extends MapComponent {
             grua,
             categoria,
           } = peaje;
-          const mark = marker([lat, lng]).addTo(this.props.leaflet.map);
+          const mark = marker([lat, lng], {
+            icon: this.state.leafletTollIcon,
+          }).addTo(this.props.leaflet.map);
           const name = nombre
             ? `<h4>Nombre: <span class="regular">${nombre}</span></h4>`
             : '';
