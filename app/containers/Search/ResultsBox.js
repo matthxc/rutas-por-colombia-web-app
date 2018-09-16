@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
+import FormatMoney from 'utils/formatMoney';
 
 // Semantic
 import { Segment, Header, Grid } from 'semantic-ui-react';
@@ -14,6 +15,8 @@ const ContainerBox = styled.div`
   padding: 2em;
   text-align: center;
 `;
+
+const moneyFormatter = new FormatMoney();
 
 const ResultsBox = ({
   locationFrom,
@@ -30,7 +33,6 @@ const ResultsBox = ({
     !isEmpty(duration) &&
     !isEmpty(distance)
   ) {
-    console.log(locationFrom);
     const { title: locationFromTitle } = locationFrom;
     const { title: locationToTitle } = locationTo;
     return (
@@ -68,7 +70,7 @@ const ResultsBox = ({
             </Grid.Column>
             <Grid.Column>
               <Header as="h4" className="no-margin">
-                {totalPrice}
+                {moneyFormatter.formatMoney(totalPrice)}
               </Header>
               <Header as="h6" className="no-margin regular">
                 VALOR TOTAL
