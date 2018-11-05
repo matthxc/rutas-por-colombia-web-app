@@ -28,7 +28,11 @@ class RoutingMachine extends MapComponent {
 
   constructor(props) {
     super(props);
-    const router = Routing.control({}).addTo(this.props.leaflet.map);
+    const router = Routing.control({
+      router: Routing.mapbox(
+        'pk.eyJ1IjoibWF0dGh4YyIsImEiOiJjam8zdzAwb2IwOHVjM3Fuc2FrMDQ1d3diIn0.Hdg2Zlt6Iamw0eiirwl86g',
+      ),
+    }).addTo(this.props.leaflet.map);
     router.hide();
     this.onRouteFound(router);
     this.onRouteError(router);
@@ -42,7 +46,6 @@ class RoutingMachine extends MapComponent {
       shadowAnchor: [6, 10], // the same for the shadow
       popupAnchor: [-6, -28], // point from which the popup should open relative to the iconAnchor
     });
-    console.log(leafletTollIcon);
     this.state = {
       router,
       markers: [],
@@ -102,7 +105,7 @@ class RoutingMachine extends MapComponent {
             totalDistanceString,
           },
         } = await axios.post(
-          'http://localhost:1337/findTollCollectors',
+          'http://localhost:8080/tollCollectors/calculate',
           {
             routes: coordinates,
             category,
