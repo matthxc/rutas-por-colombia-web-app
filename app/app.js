@@ -6,19 +6,31 @@
  */
 
 // Needed for redux-saga es6 generator support
-import 'babel-polyfill';
+import '@babel/polyfill';
 
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
+import { ConnectedRouter } from 'connected-react-router/immutable';
+import history from 'utils/history';
+import { ThemeProvider } from 'styled-components';
+import theme from 'themes/Project/abstracts/theme.variables';
+
+// Import Semantic Theme
+import 'themes/Semantic/semantic.less';
+
+// Import Ant Design Theme
+import 'themes/Ant/antdProjectTheme.less';
+
+// CSS Reset
+import 'themes/Project/vendor/reset.css';
+
+// Sanitize CSS
 import 'sanitize.css/sanitize.css';
 
-/* eslint-disable import/first */
-import '!style-loader!css-loader!resolve-url-loader!sass-loader?sourceMap!./assets/vendor/_normalize.scss';
-/* eslint-enable import/first */
+// Styles
+import 'themes/Project/main.scss';
 
 // Import root app
 import App from 'containers/App';
@@ -26,18 +38,10 @@ import App from 'containers/App';
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
-// Import Ant Design Styles
-import '!style-loader!css-loader!resolve-url-loader!sass-loader?sourceMap!./assets/antd.scss';
-import 'antd/lib/message/style/index.less';
-import 'antd/lib/notification/style/index.less';
-
-// Import CSS Semantic Styles
-import 'semantic-ui-css/semantic.min.css';
-
 // Load the favicon and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
-import 'file-loader?name=[name].[ext]!./.htaccess';
+import 'file-loader?name=.htaccess!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
 import configureStore from './configureStore';
@@ -45,24 +49,21 @@ import configureStore from './configureStore';
 // Import i18n messages
 import { translationMessages } from './i18n';
 
-/* eslint-disable import/first */
-import '!style-loader!css-loader!resolve-url-loader!sass-loader?sourceMap!./assets/main.scss';
-/* eslint-enable import/first */
-
 // Create redux store with history
 const initialState = {};
-const history = createHistory();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </LanguageProvider>
+      <ThemeProvider theme={theme}>
+        <LanguageProvider messages={messages}>
+          <ConnectedRouter history={history}>
+            <App />
+          </ConnectedRouter>
+        </LanguageProvider>
+      </ThemeProvider>
     </Provider>,
     MOUNT_NODE,
   );
@@ -90,11 +91,4 @@ if (!window.Intl) {
     });
 } else {
   render(translationMessages);
-}
-
-// Install ServiceWorker and AppCache in the end since
-// it's not most important operation and if main code fails,
-// we do not want it installed
-if (process.env.NODE_ENV === 'production') {
-  require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 }

@@ -1,0 +1,44 @@
+/*******************************
+     User Global Variables
+*******************************/
+
+/*-------------------
+       Fonts
+--------------------*/
+
+@fontName          : 'Montserrat';
+@fontSmoothing     : antialiased;
+
+@headerFont        : @fontName, sans-serif;
+@pageFont          : @fontName, sans-serif;
+
+@googleFontName    : @fontName;
+@importGoogleFonts : true;
+@googleFontSizes   : '100,300,400,400i,700,900';
+@googleSubset      : 'latin';
+
+@googleProtocol    : 'https://';
+@googleFontRequest : '@{googleFontName}:@{googleFontSizes}&subset=@{googleSubset}';
+
+
+@bold              : bold;
+@normal            : normal;
+
+
+/*-------------------
+        Page
+--------------------*/
+
+@textColor           : #222222;
+
+
+/*-------------------
+    Brand Colors
+--------------------*/
+
+@primaryColor        : #e3c83a;
+@secondaryColor      : #222222;
+
+@lightPrimaryColor   : #e3c83a;
+@lightSecondaryColor : #222222;
+

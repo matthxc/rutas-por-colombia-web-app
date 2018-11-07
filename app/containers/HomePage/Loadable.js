@@ -1,12 +1,12 @@
 /**
- *
  * Asynchronously loads the component for HomePage
- *
  */
+import React from 'react';
+import loadable from 'loadable-components';
 
-import Loadable from 'react-loadable';
+// Custom Loader
+import ComponentLoader from 'components/ComponentLoader';
 
-export default Loadable({
-  loader: () => import('./index'),
-  loading: () => null,
+export default loadable(() => import('./index'), {
+  render: props => <ComponentLoader {...props} />,
 });

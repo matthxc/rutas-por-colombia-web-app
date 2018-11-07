@@ -3,15 +3,16 @@
  * Asynchronously loads the component for Map
  *
  */
+import React from 'react';
+import loadable from 'loadable-components';
 
-import Loadable from 'react-loadable';
+// Custom Loader
+import ComponentLoader from 'components/ComponentLoader';
 
-export const Map = Loadable({
-  loader: () => import('./Map'),
-  loading: () => null,
+export const Map = loadable(() => import('./Map'), {
+  render: props => <ComponentLoader {...props} />,
 });
 
-export const RoutingMachine = Loadable({
-  loader: () => import('./RoutingMachine'),
-  loading: () => null,
+export const RoutingMachine = loadable(() => import('./RoutingMachine'), {
+  render: props => <ComponentLoader {...props} />,
 });
