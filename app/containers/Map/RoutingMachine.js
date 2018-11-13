@@ -4,12 +4,20 @@ import { Routing, marker, icon } from 'leaflet';
 import 'leaflet-routing-machine';
 import { withLeaflet, MapComponent, LeafletProvider } from 'react-leaflet';
 import { isEmpty, isEqual } from 'lodash';
-import axios from 'axios';
+import api from 'config/axiosInstance';
+
+// Ant
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 
+// Components
+import FormatMoney from 'utils/formatMoney';
+
+// Images
 import tollIcon from 'images/toll-road.png';
 import tollShadow from 'images/toll-road-shadow.png';
+
+const moneyFormatter = new FormatMoney();
 
 class RoutingMachine extends MapComponent {
   static defaultProps = {
@@ -89,7 +97,6 @@ class RoutingMachine extends MapComponent {
   /* eslint-disable indent */
   onRouteFound = router => {
     router.on('routesfound', async ({ routes }) => {
-      console.log('running...');
       const loading = message.loading('Calculando ruta...', 0);
       const { category } = this.props;
       const {
@@ -104,8 +111,8 @@ class RoutingMachine extends MapComponent {
             durationString,
             totalDistanceString,
           },
-        } = await axios.post(
-          'http://localhost:8080/tollCollectors/calculate',
+        } = await api.post(
+          '/tollCollectors/calculate',
           {
             routes: coordinates,
             category,
@@ -119,34 +126,31 @@ class RoutingMachine extends MapComponent {
           },
         );
         const markers = [];
-        tollCollectorsOnRoute.forEach(peaje => {
+        tollCollectorsOnRoute.forEach(toll => {
           const {
-            coordenadas: { lat, lng },
-            nombre,
-            departamento,
-            telefono,
-            grua,
-            categoria,
-          } = peaje;
+            coordinates: { lat, lng },
+          } = toll;
           const mark = marker([lat, lng], {
             icon: this.state.leafletTollIcon,
           }).addTo(this.props.leaflet.map);
-          const name = nombre
-            ? `<h4>Nombre: <span class="regular">${nombre}</span></h4>`
+          const name = toll.name
+            ? `<h4>Nombre: <span class="regular">${toll.name}</span></h4>`
             : '';
-          const state = departamento
-            ? `<h4>Departamento: <span class="regular">${departamento}</span></h4>`
-            : '';
-          const phone = telefono
-            ? `<h4>Teléfono: <span class="regular">${telefono}</span></h4>`
-            : '';
-          const car = grua
-            ? `<h4>Grua: <span class="regular">${grua}</span></h4>`
-            : '';
-          const price = categoria[category]
-            ? `<h4>Precio: <span class="regular">${
-                categoria[category]
+          const state = toll.state
+            ? `<h4>Departamento: <span class="regular">${
+                toll.state
               }</span></h4>`
+            : '';
+          const phone = toll.phone
+            ? `<h4>Teléfono: <span class="regular">${toll.phone}</span></h4>`
+            : '';
+          const car = toll.towTruck
+            ? `<h4>Grua: <span class="regular">${toll.towTruck}</span></h4>`
+            : '';
+          const price = toll.prices[category]
+            ? `<h4>Precio: <span class="regular">${moneyFormatter.formatMoney(
+                toll.prices[category],
+              )}</span></h4>`
             : '';
           mark.bindPopup(name + state + phone + car + price);
           markers.push(mark);
