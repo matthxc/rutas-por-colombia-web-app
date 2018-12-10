@@ -9,8 +9,8 @@
 @fontName          : 'Montserrat';
 @fontSmoothing     : antialiased;
 
-@headerFont        : @fontName, sans-serif;
-@pageFont          : @fontName, sans-serif;
+@headerFont        : @fontName, 'Helvetica Neue', Helvetica, sans-serif;
+@pageFont          : @fontName, 'Helvetica Neue', Helvetica, sans-serif;
 
 @googleFontName    : @fontName;
 @importGoogleFonts : true;

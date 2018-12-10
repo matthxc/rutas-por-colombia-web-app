@@ -3,7 +3,7 @@
 const theme = {
   primaryColor: '#e3c83a',
   textColor: '#222222',
-  darkGrey: '#444444',
+  darkGrey: '#4D4D4D',
   grey: '#222222',
 };
 

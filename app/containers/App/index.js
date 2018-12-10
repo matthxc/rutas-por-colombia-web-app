@@ -27,7 +27,11 @@ export default function App() {
       <Route
         render={({ location }) => (
           <TransitionGroup>
-            <CSSTransition key={location.key} classNames="fade" timeout={300}>
+            <CSSTransition
+              key={location.key}
+              classNames="fade-page"
+              timeout={300}
+            >
               <Switch location={location}>
                 <Route exact path="/" component={HomePage} />
                 <Route component={NotFoundPage} />

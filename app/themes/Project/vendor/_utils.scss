@@ -1,4 +1,5 @@
 /*Utils----------------------------------*/
+
 //General
 .fluid {
   display: block;
@@ -20,8 +21,21 @@
   width: 100% !important;
 }
 
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+
 .light {
   font-weight: 300 !important;
+}
+
+.bold {
+  font-weight: 700 !important;
+}
+
+.normal {
+  font-weight: 400 !important;
 }
 
 .regular {
@@ -192,6 +206,7 @@
 }
 
 /*React transitions group animations ----------------------------*/
+
 //Fade
 .fade-enter {
   opacity: 0;
