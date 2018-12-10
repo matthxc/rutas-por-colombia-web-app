@@ -97,7 +97,7 @@ class RoutingMachine extends MapComponent {
   /* eslint-disable indent */
   onRouteFound = router => {
     router.on('routesfound', async ({ routes }) => {
-      const loading = message.loading('Calculando ruta...', 0);
+      let loading = message.loading('Calculando ruta...', 0);
       const { category } = this.props;
       const {
         coordinates,
@@ -155,6 +155,27 @@ class RoutingMachine extends MapComponent {
           mark.bindPopup(name + state + phone + car + price);
           markers.push(mark);
         });
+        loading();
+        loading = message.loading('Buscando sitios turísticos cercanos...', 0);
+        const {
+          data: { touristAttractionsOnRoute },
+        } = await api.post(
+          '/touristAttractions/calculate',
+          {
+            routes: coordinates,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        console.log(touristAttractionsOnRoute);
+        touristAttractionsOnRoute.forEach(touristAttraction => {
+          const { lat, lng } = touristAttraction;
+          const mark = marker([lat, lng]).addTo(this.props.leaflet.map);
+          markers.push(mark);
+        });
         this.setState({ markers });
         this.props.onRouteResultsFound({
           totalPrice,
@@ -163,11 +184,11 @@ class RoutingMachine extends MapComponent {
           tollCollectors: tollCollectorsOnRoute.length,
         });
       } catch (error) {
-        console.log(error);
         message.error(
           'Hubo un error al buscar la ruta. Por favor intenta nuevamente.',
           5,
         );
+        throw error;
       } finally {
         loading();
       }
