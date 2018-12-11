@@ -16,6 +16,8 @@ import FormatMoney from 'utils/formatMoney';
 // Images
 import tollIcon from 'images/toll-road.png';
 import tollShadow from 'images/toll-road-shadow.png';
+import touristAttractionIcon from 'images/tourist-attraction.png';
+import touristAttractionShadow from 'images/tourist-attraction-shadow.png';
 
 const moneyFormatter = new FormatMoney();
 
@@ -54,10 +56,21 @@ class RoutingMachine extends MapComponent {
       shadowAnchor: [6, 10], // the same for the shadow
       popupAnchor: [-6, -28], // point from which the popup should open relative to the iconAnchor
     });
+
+    const leafletTouristAttractionIcon = icon({
+      iconUrl: touristAttractionIcon,
+      shadowUrl: touristAttractionShadow,
+      iconSize: [32, 32], // size of the icon
+      shadowSize: [32, 9], // size of the shadow
+      iconAnchor: [16, 30], // point of the icon which will correspond to marker's location
+      shadowAnchor: [6, 10], // the same for the shadow
+      popupAnchor: [-6, -28], // point from which the popup should open relative to the iconAnchor
+    });
     this.state = {
       router,
       markers: [],
       leafletTollIcon,
+      leafletTouristAttractionIcon,
     };
   }
 
@@ -125,6 +138,8 @@ class RoutingMachine extends MapComponent {
             },
           },
         );
+        loading();
+        loading = message.loading('Buscando sitios turísticos cercanos...', 0);
         const markers = [];
         tollCollectorsOnRoute.forEach(toll => {
           const {
@@ -155,8 +170,6 @@ class RoutingMachine extends MapComponent {
           mark.bindPopup(name + state + phone + car + price);
           markers.push(mark);
         });
-        loading();
-        loading = message.loading('Buscando sitios turísticos cercanos...', 0);
         const {
           data: { touristAttractionsOnRoute },
         } = await api.post(
@@ -170,10 +183,11 @@ class RoutingMachine extends MapComponent {
             },
           },
         );
-        console.log(touristAttractionsOnRoute);
         touristAttractionsOnRoute.forEach(touristAttraction => {
           const { lat, lng } = touristAttraction;
-          const mark = marker([lat, lng]).addTo(this.props.leaflet.map);
+          const mark = marker([lat, lng], {
+            icon: this.state.leafletTouristAttractionIcon,
+          }).addTo(this.props.leaflet.map);
           markers.push(mark);
         });
         this.setState({ markers });
