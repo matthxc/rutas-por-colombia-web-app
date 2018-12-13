@@ -18,6 +18,8 @@ import tollIcon from 'images/toll-road.png';
 import tollShadow from 'images/toll-road-shadow.png';
 import touristAttractionIcon from 'images/tourist-attraction.png';
 import touristAttractionShadow from 'images/tourist-attraction-shadow.png';
+import flagIcon from 'images/flag.png';
+import flagShadow from 'images/flag-shadow.png';
 
 const moneyFormatter = new FormatMoney();
 
@@ -42,6 +44,22 @@ class RoutingMachine extends MapComponent {
       router: Routing.mapbox(
         'pk.eyJ1IjoibWF0dGh4YyIsImEiOiJjam8zdzAwb2IwOHVjM3Fuc2FrMDQ1d3diIn0.Hdg2Zlt6Iamw0eiirwl86g',
       ),
+      plan: Routing.plan([], {
+        createMarker(i, wp) {
+          return marker(wp.latLng, {
+            draggable: true,
+            icon: icon({
+              iconUrl: flagIcon,
+              shadowUrl: flagShadow,
+              iconSize: [32, 32], // size of the icon
+              shadowSize: [32, 9], // size of the shadow
+              iconAnchor: [5, 30], // point of the icon which will correspond to marker's location
+              shadowAnchor: [0, 10], // the same for the shadow
+              popupAnchor: [-6, -28], // point from which the popup should open relative to the iconAnchor
+            }),
+          });
+        },
+      }),
     }).addTo(this.props.leaflet.map);
     router.hide();
     this.onRouteFound(router);
