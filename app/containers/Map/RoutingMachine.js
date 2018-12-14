@@ -29,6 +29,7 @@ class RoutingMachine extends MapComponent {
     locationTo: {},
     category: 0,
     onRouteResultsFound: () => {},
+    viewTouristAttraction: () => {},
   };
 
   static propTypes = {
@@ -36,6 +37,7 @@ class RoutingMachine extends MapComponent {
     locationTo: PropTypes.object,
     category: PropTypes.number,
     onRouteResultsFound: PropTypes.func,
+    viewTouristAttraction: PropTypes.func,
   };
 
   constructor(props) {
@@ -202,10 +204,18 @@ class RoutingMachine extends MapComponent {
           },
         );
         touristAttractionsOnRoute.forEach(touristAttraction => {
-          const { lat, lng } = touristAttraction;
+          const { lat, lng, name } = touristAttraction;
           const mark = marker([lat, lng], {
             icon: this.state.leafletTouristAttractionIcon,
           }).addTo(this.props.leaflet.map);
+          mark.bindTooltip(name, {
+            permanent: true,
+            offset: [12, -16],
+            direction: 'right',
+          });
+          mark.on('click', () => {
+            this.props.viewTouristAttraction(touristAttraction);
+          });
           markers.push(mark);
         });
         this.setState({ markers });

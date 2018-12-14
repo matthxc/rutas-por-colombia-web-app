@@ -21,6 +21,7 @@ class Map extends React.PureComponent {
   static propTypes = {
     searchParameters: PropTypes.object.isRequired,
     setRouteResults: PropTypes.func.isRequired,
+    viewTouristAttraction: PropTypes.func.isRequired,
   };
 
   state = {
@@ -64,9 +65,10 @@ class Map extends React.PureComponent {
           locationTo={locationTo}
           category={category}
           onRouteResultsFound={this.onRouteResultsFound}
+          viewTouristAttraction={this.props.viewTouristAttraction}
         />
         <TileLayer
-          attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </LeafletMap>

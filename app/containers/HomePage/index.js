@@ -18,11 +18,15 @@ const Container = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 class HomePage extends React.PureComponent {
+  viewTouristAttraction = touristAttraction => {
+    console.log(touristAttraction);
+  };
+
   render() {
     return (
       <Container>
         <SearchModal />
-        <Map />
+        <Map viewTouristAttraction={this.viewTouristAttraction} />
       </Container>
     );
   }
