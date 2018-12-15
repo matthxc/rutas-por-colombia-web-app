@@ -15,7 +15,6 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
 import history from 'utils/history';
 import { ThemeProvider } from 'styled-components';
-import theme from 'themes/Project/abstracts/theme.variables';
 
 // Import Semantic Theme
 import 'themes/Semantic/semantic.less';
@@ -53,6 +52,9 @@ import { translationMessages } from './i18n';
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
+
+// Import theme variables and extract it
+const theme = require('sass-extract-loader?{"plugins":["sass-extract-js"]}!./themes/Project/abstracts/_variables.scss');
 
 const render = messages => {
   ReactDOM.render(

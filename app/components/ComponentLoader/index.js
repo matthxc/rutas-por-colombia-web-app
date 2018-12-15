@@ -9,11 +9,17 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 // Custom Loader
-import Loader from 'components/Loader';
+import { PageLoader } from 'components/Loader';
 
 class ComponentLoader extends React.PureComponent {
   state = {
     animationEnds: false,
+  };
+
+  componentDidMount = () => {
+    if (!this.props.loading) {
+      this.setState({ animationEnds: true });
+    }
   };
 
   render() {
@@ -31,7 +37,7 @@ class ComponentLoader extends React.PureComponent {
             this.setState({ animationEnds: true });
           }}
         >
-          <Loader />
+          <PageLoader />
         </CSSTransition>
         {!loading && animationEnds && <Component {...ownProps} />}
       </div>
