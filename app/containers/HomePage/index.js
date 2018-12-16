@@ -10,6 +10,7 @@ import styled from 'styled-components';
 // Components
 import { Map } from '../Map';
 import { SearchModal } from '../Search';
+import TouristAttraction from '../TouristAttraction';
 
 const Container = styled.div`
   position: relative;
@@ -18,15 +19,32 @@ const Container = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 class HomePage extends React.PureComponent {
-  viewTouristAttraction = touristAttraction => {
-    console.log(touristAttraction);
+  state = {
+    drawerVisible: false,
+  };
+
+  openTouristAttractionDrawer = () => {
+    this.setState({
+      drawerVisible: true,
+    });
+  };
+
+  closeTouristAttractionDrawer = () => {
+    this.setState({
+      drawerVisible: false,
+    });
   };
 
   render() {
+    const { drawerVisible } = this.state;
     return (
       <Container>
         <SearchModal />
-        <Map viewTouristAttraction={this.viewTouristAttraction} />
+        <Map viewTouristAttraction={this.openTouristAttractionDrawer} />
+        <TouristAttraction
+          visible={drawerVisible}
+          close={this.closeTouristAttractionDrawer}
+        />
       </Container>
     );
   }

@@ -29,7 +29,7 @@ class RoutingMachine extends MapComponent {
     locationTo: {},
     category: 0,
     onRouteResultsFound: () => {},
-    viewTouristAttraction: () => {},
+    setTouristAttractionInfo: () => {},
   };
 
   static propTypes = {
@@ -37,7 +37,7 @@ class RoutingMachine extends MapComponent {
     locationTo: PropTypes.object,
     category: PropTypes.number,
     onRouteResultsFound: PropTypes.func,
-    viewTouristAttraction: PropTypes.func,
+    setTouristAttractionInfo: PropTypes.func,
   };
 
   constructor(props) {
@@ -214,7 +214,7 @@ class RoutingMachine extends MapComponent {
             direction: 'right',
           });
           mark.on('click', () => {
-            this.props.viewTouristAttraction(touristAttraction);
+            this.props.setTouristAttractionInfo(touristAttraction);
           });
           markers.push(mark);
         });

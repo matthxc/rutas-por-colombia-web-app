@@ -16,12 +16,14 @@ import RoutingMachine from './RoutingMachine';
 import { makeSelectSearch } from '../Search/selectors';
 import { searchReducer } from '../Search/reducer';
 import { setRouteResults } from './actions';
+import { setTouristAttraction } from '../TouristAttraction/actions';
 
 class Map extends React.PureComponent {
   static propTypes = {
     searchParameters: PropTypes.object.isRequired,
     setRouteResults: PropTypes.func.isRequired,
     viewTouristAttraction: PropTypes.func.isRequired,
+    setTouristAttraction: PropTypes.func.isRequired,
   };
 
   state = {
@@ -47,6 +49,11 @@ class Map extends React.PureComponent {
     this.props.setRouteResults(routeResults);
   };
 
+  viewTouristAttraction = touristAttraction => {
+    this.props.setTouristAttraction(touristAttraction);
+    this.props.viewTouristAttraction();
+  };
+
   render() {
     const {
       searchParameters: { locationFrom, locationTo, category },
@@ -65,7 +72,7 @@ class Map extends React.PureComponent {
           locationTo={locationTo}
           category={category}
           onRouteResultsFound={this.onRouteResultsFound}
-          viewTouristAttraction={this.props.viewTouristAttraction}
+          setTouristAttractionInfo={this.viewTouristAttraction}
         />
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -82,6 +89,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = {
   setRouteResults,
+  setTouristAttraction,
 };
 
 const withConnect = connect(
