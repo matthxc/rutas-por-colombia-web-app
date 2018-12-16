@@ -8,5 +8,8 @@ export const Drawer = styled(AntDrawer)`
     .ant-drawer-content-wrapper {
       max-width: 560px;
     }
+    .ant-drawer-body {
+      padding: 0;
+    }
   }
 `;

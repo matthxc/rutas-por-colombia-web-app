@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import endpoints from 'config/endpoints.json';
 
 // Antd
 import Spin from 'antd/lib/spin';
@@ -21,11 +22,13 @@ export default Component => {
   class ImageLoader extends React.Component {
     static defaultProps = {
       src: null,
+      source: 'external',
     };
 
     static propTypes = {
       src: PropTypes.string,
       alt: PropTypes.string.isRequired,
+      source: PropTypes.string,
     };
 
     isMounted = false;
@@ -36,9 +39,13 @@ export default Component => {
     }
 
     componentDidMount = () => {
-      const { src } = this.props;
+      const { src, source } = this.props;
       if (src) {
-        this.setState({ url: src });
+        let url = src;
+        if (source === 'api') {
+          url = `${endpoints.API_URL}/${src}`;
+        }
+        this.setState({ url });
       }
     };
 

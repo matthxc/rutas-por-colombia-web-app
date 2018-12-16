@@ -9,10 +9,13 @@ import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 
 // Semantic
-import { Segment } from 'semantic-ui-react';
+import { Segment, Divider } from 'semantic-ui-react';
 
 // Components
 import Header from 'components/Header';
+import Carousel from 'components/Carousel';
+import { Row, Col } from 'components/Grid';
+import Tag from 'components/Tag';
 
 // Redux stuff
 import { makeSelectTouristAttraction } from './selectors';
@@ -34,11 +37,35 @@ class TouristAttraction extends React.Component {
     close: PropTypes.func,
   };
 
+  renderActivities = activities =>
+    activities.map((activity, counter) => (
+      <Tag color="#0052b4" key={counter}>
+        {activity}
+      </Tag>
+    ));
+
   render() {
     const { touristAttraction, visible } = this.props;
-
+    if (isEmpty(touristAttraction)) {
+      return (
+        <Drawer
+          title="Error"
+          placement="right"
+          onClose={this.props.close}
+          visible={visible}
+          destroyOnClose
+          width="100%"
+        >
+          <Segment basic padded="very">
+            <Header type="h2" textAlign="center">
+              Lo sentimos. Hubo un error al mostrar la información.
+            </Header>
+          </Segment>
+        </Drawer>
+      );
+    }
     console.log(touristAttraction);
-    const { name, description } = touristAttraction;
+    const { name, description, activities, images, phone } = touristAttraction;
     return (
       <Drawer
         title={
@@ -52,15 +79,28 @@ class TouristAttraction extends React.Component {
         destroyOnClose
         width="100%"
       >
-        {isEmpty(touristAttraction) ? (
-          <Segment basic padded="very">
-            <Header type="h2" textAlign="center">
-              Lo sentimos. Hubo un error al mostrar la información.
+        <React.Fragment>
+          <Carousel centered images={images} imageSource="api" />
+          <Segment basic>
+            <Row gutter={24} padded>
+              <Col xs={24} md={12}>
+                <Header type="h4" underline>
+                  Actividades
+                </Header>
+                <p>{this.renderActivities(activities)}</p>
+              </Col>
+              <Col xs={24} md={12}>
+                <Header type="h4" underline content="Número de contacto" />
+                <p> {phone}</p>
+              </Col>
+            </Row>
+            <Divider hidden />
+            <Header type="h4" underline>
+              Descripción
             </Header>
+            <p>{description}</p>
           </Segment>
-        ) : (
-          <p>{description}</p>
-        )}
+        </React.Fragment>
       </Drawer>
     );
   }

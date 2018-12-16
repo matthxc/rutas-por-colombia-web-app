@@ -78,6 +78,8 @@ module.exports = {
     'redux-saga/no-yield-in-race': 2,
     'redux-saga/yield-effects': 2,
     'require-yield': 0,
+    indent: 'off',
+    'react/no-array-index-key': 'off',
   },
   settings: {
     'import/resolver': {

@@ -22,6 +22,7 @@ class CarouselComponent extends React.Component {
     height: 'auto',
     centered: false,
     aspectRatio: '21:9',
+    imageSource: 'external',
   };
 
   static propTypes = {
@@ -32,6 +33,7 @@ class CarouselComponent extends React.Component {
     aspectRatio: PropTypes.string,
     className: PropTypes.string,
     style: PropTypes.object,
+    imageSource: PropTypes.string,
   };
 
   settings = {
@@ -46,15 +48,37 @@ class CarouselComponent extends React.Component {
   };
 
   renderImages = images =>
-    images.map((image, counter) => {
+    images.map(({ _id, path }) => {
       if (this.props.centered) {
-        return <CenteredImage key={counter} src={image} alt="Carousel Image" />;
+        return (
+          <CenteredImage
+            key={_id}
+            src={path}
+            source={this.props.imageSource}
+            alt="Carousel Image"
+          />
+        );
       }
-      return <Image key={counter} src={image} alt="Carousel Image" />;
+      return (
+        <Image
+          key={_id}
+          src={path}
+          source={this.props.imageSource}
+          alt="Carousel Image"
+        />
+      );
     });
 
   render() {
-    const { width, images, centered, className, style, ...props } = this.props;
+    const {
+      width,
+      images,
+      centered,
+      className,
+      style,
+      imageSource,
+      ...props
+    } = this.props;
     let { height, aspectRatio } = this.props;
     let paddingTop = 0;
     if (!centered) {
