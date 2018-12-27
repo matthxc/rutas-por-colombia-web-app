@@ -32,6 +32,12 @@ const MainContainer = styled.div`
   z-index: 999;
   width: 100%;
   max-width: 350px;
+  @media (max-width: 767px) {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    max-width: none;
+  }
 `;
 
 const ContainerModal = styled(Modal)`
