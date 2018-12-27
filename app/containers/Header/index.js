@@ -29,12 +29,7 @@ export default () => (
         <Link to="/" className="brand-logo h100">
           <Logo src={logo} alt="Main logo" />
         </Link>
-        <Header
-          className="no-margin"
-          as="h4"
-          icon="info circle"
-          content="Información"
-        />
+        <Header className="no-margin" as="h4" icon="info circle" />
       </Container>
     </Segment>
   </SiteHeader>
