@@ -35,24 +35,29 @@ const MainContainer = styled.div`
 `;
 
 const ContainerModal = styled(Modal)`
-  & .ant-modal-body {
-    background-color: #303030;
-  }
-  & .ant-modal-close-x {
-    color: white;
+  &&& {
+    & .ant-modal-body {
+      background-color: #303030;
+    }
+    & .ant-modal-close-x {
+      color: white;
+    }
+    max-width: 600px;
   }
 `;
 
 const Selector = styled(Select)`
-  &.ui.selection.dropdown {
-    display: inline-block;
-    border-radius: 0;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    background-color: transparent;
-    color: white;
-    border-color: white;
+  &&& {
+    &.ui.selection.dropdown {
+      display: inline-block;
+      border-radius: 0;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      background-color: transparent;
+      color: white;
+      border-color: white;
+    }
   }
 `;
 
@@ -73,7 +78,7 @@ class SearchModal extends React.PureComponent {
 
   state = {
     visible: false,
-    categoryValue: 0,
+    categoryValue: null,
   };
 
   showModal = () => {
@@ -132,35 +137,45 @@ class SearchModal extends React.PureComponent {
           destroyOnClose
           width="80%"
         >
-          <Segment basic padded="very" textAlign="center">
-            <Header as="h2" inverted>
-              <span>Quiero conocer la ruta de{`  `}</span>
+          <Segment basic textAlign="center">
+            <Header as="h3" inverted>
               <SearchInput
                 onSelect={location => {
                   this.setState({ locationFrom: location });
                 }}
-              />
-              <span>
-                {`  `}a{`  `}
-              </span>
-              <SearchInput
-                onSelect={location => {
-                  this.setState({ locationTo: location });
-                }}
-              />
-              <span>
-                {`  `}, en un vehículo categoría{`  `}
-              </span>
-              <Selector
-                options={categoryOptions}
-                compact
-                onChange={this.handleCategoryChange}
-                value={categoryValue}
+                placeholder="Origen"
               />
             </Header>
           </Segment>
           <Segment basic textAlign="center">
-            <Button type="primary" onClick={this.searchRoute} size="large">
+            <Header as="h3" inverted>
+              <SearchInput
+                onSelect={location => {
+                  this.setState({ locationTo: location });
+                }}
+                placeholder="¿A dónde vas?"
+              />
+            </Header>
+          </Segment>
+          <Segment basic textAlign="center">
+            <Header as="h3" inverted>
+              <Selector
+                options={categoryOptions}
+                onChange={this.handleCategoryChange}
+                value={categoryValue}
+                placeholder="Elige la categoría de tu vehículo"
+                fluid
+              />
+            </Header>
+          </Segment>
+          <Segment basic textAlign="center">
+            <Button
+              type="primary"
+              onClick={this.searchRoute}
+              size="large"
+              block
+              style={{ maxWidth: '400px' }}
+            >
               Buscar ruta
             </Button>
           </Segment>

@@ -7,32 +7,43 @@ import { Control } from 'leaflet';
 import 'leaflet-control-geocoder';
 
 const Search = styled(SearchControl)`
-  display: inline-block;
-  & > .ui.input > input {
-    border-radius: 0;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    background: transparent;
-    background-color: transparent;
-    color: white;
-    border-color: white;
-    &:focus,
-    &:hover {
+  &&& {
+    display: inline-block;
+    width: 100%;
+    * {
+      width: 100%;
+    }
+    & > .ui.input > input {
+      border-radius: 0;
+      border-top: none;
+      border-left: none;
+      border-right: none;
       background: transparent;
       background-color: transparent;
       color: white;
+      border-color: white;
+      &:focus,
+      &:hover {
+        background: transparent;
+        background-color: transparent;
+        color: white;
+      }
     }
-  }
-  & > .results .result {
-    font-size: 1rem !important;
-    text-align: left;
+    & > .results .result {
+      font-size: 1rem !important;
+      text-align: left;
+    }
   }
 `;
 
 class SearchInput extends Component {
+  static defaultProps = {
+    placeholder: '',
+  };
+
   static propTypes = {
     onSelect: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
   };
 
   state = { noResultsMessage: 'No se encontraron resultados' };
@@ -83,7 +94,7 @@ class SearchInput extends Component {
         });
       } catch (error) {
         this.setState({ isLoading: false, results: [] });
-        console.log(error);
+        throw error;
       }
     }
   }, 500);
@@ -102,6 +113,7 @@ class SearchInput extends Component {
     });
 
   render() {
+    const { placeholder } = this.props;
     const { isLoading, value, results, noResultsMessage } = this.state;
     return (
       <Search
@@ -120,6 +132,9 @@ class SearchInput extends Component {
             e.preventDefault();
             this.loseFocusFields();
           }
+        }}
+        input={{
+          placeholder,
         }}
       />
     );
