@@ -34,6 +34,7 @@ const MainContainer = styled.div`
   z-index: 999;
   width: 100%;
   max-width: 350px;
+  background: transparent;
   @media (max-width: 767px) {
     top: auto;
     bottom: 0;
@@ -109,7 +110,6 @@ class SearchModal extends React.PureComponent {
   static propTypes = {
     searchRoute: PropTypes.func.isRequired,
     routeResults: PropTypes.object.isRequired,
-    resetRouteResults: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -127,12 +127,18 @@ class SearchModal extends React.PureComponent {
     this.updateResultsBoxSize();
   };
 
-  componentDidUpdate = () => {
-    this.updateResultsBoxSize();
+  componentDidUpdate = (prevProps, prevState) => {
+    const { visible } = this.state;
+    if (visible !== prevState.visible) {
+      if (visible) {
+        this.hideResultsBox();
+      } else {
+        this.showResultsBox();
+      }
+    }
   };
 
   showModal = () => {
-    this.props.resetRouteResults();
     this.setState({
       visible: true,
     });
@@ -172,8 +178,11 @@ class SearchModal extends React.PureComponent {
   updateResultsBoxSize = () => {
     const { showResultsBox } = this.state;
     if (showResultsBox) {
-      const resultsBox = this.resultsBox.current;
-      resultsBox.style.height = `${resultsBox.scrollHeight}px`;
+      const resultsBoxContainer = this.resultsBox.current;
+      const resultsBox = resultsBoxContainer.children[0];
+      if (resultsBox) {
+        resultsBoxContainer.style.height = `${resultsBox.scrollHeight}px`;
+      }
     }
   };
 
@@ -187,6 +196,18 @@ class SearchModal extends React.PureComponent {
       resultsBox.style.height = `${resultsBox.scrollHeight}px`;
       this.setState({ showResultsBox: true });
     }
+  };
+
+  hideResultsBox = () => {
+    const resultsBox = this.resultsBox.current;
+    resultsBox.style.height = '0';
+    this.setState({ showResultsBox: false });
+  };
+
+  showResultsBox = () => {
+    const resultsBox = this.resultsBox.current;
+    resultsBox.style.height = `${resultsBox.scrollHeight}px`;
+    this.setState({ showResultsBox: true });
   };
 
   render() {
@@ -211,6 +232,7 @@ class SearchModal extends React.PureComponent {
             locationTo={locationTo}
             category={categoryValue}
             routeResults={routeResults}
+            updateResultsBoxSize={this.updateResultsBoxSize}
           />
         </ResultsBoxContaier>
         <Button type="primary" block onClick={this.showModal}>

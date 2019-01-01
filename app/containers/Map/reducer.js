@@ -12,6 +12,7 @@ export const initialRouteResultsState = fromJS({
   duration: null,
   distance: null,
   tollCollectors: null,
+  loading: false,
 });
 
 export const routeResultsReducer = (

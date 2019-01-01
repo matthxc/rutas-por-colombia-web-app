@@ -131,6 +131,9 @@ class RoutingMachine extends MapComponent {
   onRouteFound = router => {
     router.on('routesfound', async ({ routes }) => {
       let loading = message.loading('Calculando ruta...', 0);
+      this.props.onRouteResultsFound({
+        loading: true,
+      });
       const { category } = this.props;
       const {
         coordinates,
@@ -224,6 +227,7 @@ class RoutingMachine extends MapComponent {
           duration: durationString,
           distance: totalDistanceString,
           tollCollectors: tollCollectorsOnRoute.length,
+          loading: false,
         });
       } catch (error) {
         message.error(
