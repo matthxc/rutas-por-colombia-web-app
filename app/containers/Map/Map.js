@@ -5,9 +5,13 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import { Map as LeafletMap, TileLayer, ZoomControl } from 'react-leaflet';
+import theme from 'theme';
 
 // Antd
 import message from 'antd/lib/message';
+
+// Semantic
+import { Responsive } from 'semantic-ui-react';
 
 // Components
 import RoutingMachine from './RoutingMachine';
@@ -17,6 +21,8 @@ import { makeSelectSearch } from '../Search/selectors';
 import { searchReducer } from '../Search/reducer';
 import { setRouteResults } from './actions';
 import { setTouristAttraction } from '../TouristAttraction/actions';
+
+const { breakpointsDown, breakpointsUp } = theme;
 
 class Map extends React.PureComponent {
   static propTypes = {
@@ -41,7 +47,7 @@ class Map extends React.PureComponent {
         });
       });
     } else {
-      message.error('Geolocation is not supported by this browser.', 5);
+      message.error('Este navegador no soporta geolocalización', 5);
     }
   };
 
@@ -66,7 +72,12 @@ class Map extends React.PureComponent {
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
       >
-        <ZoomControl position="bottomright" />
+        <Responsive as={React.Fragment} maxWidth={breakpointsDown.sm}>
+          <ZoomControl position="topright" />
+        </Responsive>
+        <Responsive as={React.Fragment} minWidth={breakpointsUp.md}>
+          <ZoomControl position="bottomright" />
+        </Responsive>
         <RoutingMachine
           locationFrom={locationFrom}
           locationTo={locationTo}
