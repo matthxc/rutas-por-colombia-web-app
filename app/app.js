@@ -43,6 +43,9 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
+// Theme
+import theme from './theme';
+
 import configureStore from './configureStore';
 
 // Import i18n messages
@@ -52,9 +55,6 @@ import { translationMessages } from './i18n';
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
-
-// Import theme variables and extract it
-const theme = require('sass-extract-loader?{"plugins":["sass-extract-js"]}!./themes/Project/abstracts/_variables.scss');
 
 const render = messages => {
   ReactDOM.render(
