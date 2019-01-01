@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
+import isNumber from 'lodash/isNumber';
 import theme from 'theme';
 
 // Antd
@@ -149,7 +150,11 @@ class SearchModal extends React.PureComponent {
 
   searchRoute = () => {
     const { categoryValue, locationFrom, locationTo } = this.state;
-    if (!isEmpty(locationFrom) && !isEmpty(locationTo)) {
+    if (
+      !isEmpty(locationFrom) &&
+      !isEmpty(locationTo) &&
+      isNumber(categoryValue)
+    ) {
       this.closeModal();
       this.props.searchRoute({
         locationFrom: locationFrom.coordinates,
@@ -157,7 +162,7 @@ class SearchModal extends React.PureComponent {
         category: categoryValue,
       });
     } else {
-      message.error(
+      message.warning(
         'Recuerda llenar todos los campos antes de hacer la búsqueda',
         4,
       );
