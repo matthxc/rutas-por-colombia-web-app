@@ -31,7 +31,7 @@ const MainContainer = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 9999;
+  z-index: 999;
   width: 100%;
   max-width: 350px;
   @media (max-width: 767px) {

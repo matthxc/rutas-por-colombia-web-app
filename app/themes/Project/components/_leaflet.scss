@@ -1,3 +1,9 @@
 .leaflet-routing-container.leaflet-routing-container-hide {
   display: none;
 }
+
+.leaflet-control-container {
+  .leaflet-control-attribution {
+    display: none !important;
+  }
+}
