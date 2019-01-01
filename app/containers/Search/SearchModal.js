@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
+import theme from 'theme';
 
 // Antd
 import Modal from 'antd/lib/modal';
@@ -13,7 +14,7 @@ import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 
 // Semantic
-import { Segment, Header, Select } from 'semantic-ui-react';
+import { Segment, Header, Select, Responsive, Icon } from 'semantic-ui-react';
 
 // Redux
 import { makeSelectRouteResults } from '../Map/selectors';
@@ -67,6 +68,32 @@ const Selector = styled(Select)`
   }
 `;
 
+const ResultsBoxContaier = styled.div`
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: auto;
+  transition: height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+`;
+
+const ToggleArrow = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  height: 2em;
+  background-color: white;
+`;
+
+const ArrowIcon = styled(Icon)`
+  &&& {
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform: rotate(${props => (props.active ? 0 : 180)}deg);
+  }
+`;
+
 const categoryOptions = [
   { key: 0, value: 0, text: 'I' },
   { key: 1, value: 1, text: 'II' },
@@ -75,6 +102,8 @@ const categoryOptions = [
   { key: 4, value: 4, text: 'V' },
 ];
 
+const { breakpointsDown } = theme;
+
 class SearchModal extends React.PureComponent {
   static propTypes = {
     searchRoute: PropTypes.func.isRequired,
@@ -82,9 +111,23 @@ class SearchModal extends React.PureComponent {
     resetRouteResults: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.resultsBox = React.createRef();
+  }
+
   state = {
     visible: false,
     categoryValue: null,
+    showResultsBox: true,
+  };
+
+  componentDidMount = () => {
+    this.updateResultsBoxSize();
+  };
+
+  componentDidUpdate = () => {
+    this.updateResultsBoxSize();
   };
 
   showModal = () => {
@@ -121,17 +164,50 @@ class SearchModal extends React.PureComponent {
     }
   };
 
+  updateResultsBoxSize = () => {
+    const { showResultsBox } = this.state;
+    if (showResultsBox) {
+      const resultsBox = this.resultsBox.current;
+      resultsBox.style.height = `${resultsBox.scrollHeight}px`;
+    }
+  };
+
+  toggleResultsBox = () => {
+    const { showResultsBox } = this.state;
+    const resultsBox = this.resultsBox.current;
+    if (showResultsBox) {
+      resultsBox.style.height = '0';
+      this.setState({ showResultsBox: false });
+    } else {
+      resultsBox.style.height = `${resultsBox.scrollHeight}px`;
+      this.setState({ showResultsBox: true });
+    }
+  };
+
   render() {
-    const { visible, categoryValue, locationFrom, locationTo } = this.state;
+    const {
+      visible,
+      categoryValue,
+      locationFrom,
+      locationTo,
+      showResultsBox,
+    } = this.state;
     const { routeResults } = this.props;
     return (
       <MainContainer>
-        <ResultsBox
-          locationFrom={locationFrom}
-          locationTo={locationTo}
-          category={categoryValue}
-          routeResults={routeResults}
-        />
+        <Responsive maxWidth={breakpointsDown.sm} as={React.Fragment}>
+          <ToggleArrow onClick={this.toggleResultsBox}>
+            <ArrowIcon name="angle down" active={showResultsBox} />
+          </ToggleArrow>
+        </Responsive>
+        <ResultsBoxContaier ref={this.resultsBox}>
+          <ResultsBox
+            locationFrom={locationFrom}
+            locationTo={locationTo}
+            category={categoryValue}
+            routeResults={routeResults}
+          />
+        </ResultsBoxContaier>
         <Button type="primary" block onClick={this.showModal}>
           Nueva búsqueda
         </Button>

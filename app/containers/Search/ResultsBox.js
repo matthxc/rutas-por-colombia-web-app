@@ -6,7 +6,10 @@ import isNumber from 'lodash/isNumber';
 import FormatMoney from 'utils/formatMoney';
 
 // Semantic
-import { Segment, Header, Grid } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
+
+// Components
+import { Row, Col } from 'components/Grid';
 
 const ContainerBox = styled.div`
   position: relative;
@@ -40,44 +43,43 @@ const ResultsBox = ({
         <Header as="h3">{`De ${locationFromTitle.split(',')[0]} a ${
           locationToTitle.split(',')[0]
         }`}</Header>
-        <Grid stackable columns="equal">
-          <Grid.Row>
-            <Grid.Column>
-              <Header as="h4" className="no-margin">
-                {distance}
-              </Header>
-              <Header as="h6" className="no-margin regular">
-                DISTANCIA
-              </Header>
-            </Grid.Column>
-            <Grid.Column>
-              <Header as="h4" className="no-margin">
-                {duration}
-              </Header>
-              <Header as="h6" className="no-margin regular">
-                TIEMPO
-              </Header>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <Header as="h4" className="no-margin">
-                {tollCollectors}
-              </Header>
-              <Header as="h6" className="no-margin regular">
-                NÚMERO DE PEAJES
-              </Header>
-            </Grid.Column>
-            <Grid.Column>
-              <Header as="h4" className="no-margin">
-                {moneyFormatter.formatMoney(totalPrice)}
-              </Header>
-              <Header as="h6" className="no-margin regular">
-                VALOR TOTAL
-              </Header>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+
+        <Row gutter={24} verticalGutter={24}>
+          <Col span={12}>
+            <Header as="h4" className="no-margin">
+              {distance}
+            </Header>
+            <Header as="h6" className="no-margin regular">
+              DISTANCIA
+            </Header>
+          </Col>
+          <Col span={12}>
+            <Header as="h4" className="no-margin">
+              {duration}
+            </Header>
+            <Header as="h6" className="no-margin regular">
+              TIEMPO
+            </Header>
+          </Col>
+        </Row>
+        <Row gutter={24} verticalGutter={24}>
+          <Col span={12}>
+            <Header as="h4" className="no-margin">
+              {tollCollectors}
+            </Header>
+            <Header as="h6" className="no-margin regular">
+              NÚMERO DE PEAJES
+            </Header>
+          </Col>
+          <Col span={12}>
+            <Header as="h4" className="no-margin">
+              {moneyFormatter.formatMoney(totalPrice)}
+            </Header>
+            <Header as="h6" className="no-margin regular">
+              VALOR TOTAL
+            </Header>
+          </Col>
+        </Row>
       </ContainerBox>
     );
   }
@@ -102,7 +104,7 @@ ResultsBox.defaultProps = {
 ResultsBox.propTypes = {
   locationFrom: PropTypes.object,
   locationTo: PropTypes.object,
-  category: PropTypes.number.isRequired,
+  category: PropTypes.number,
   routeResults: PropTypes.object.isRequired,
 };
 
