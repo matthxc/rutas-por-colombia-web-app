@@ -9,6 +9,9 @@ const selectRouteResultsDomain = state =>
   state.get('routeResults', initialRouteResultsState);
 
 const makeSelectRouteResults = () =>
-  createSelector(selectRouteResultsDomain, substate => substate.toJS());
+  createSelector(
+    selectRouteResultsDomain,
+    substate => substate.toJS(),
+  );
 
 export { selectRouteResultsDomain, makeSelectRouteResults };

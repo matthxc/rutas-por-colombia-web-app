@@ -37,20 +37,12 @@ const Search = styled(SearchControl)`
 `;
 
 class SearchInput extends Component {
-  static defaultProps = {
-    placeholder: '',
+  state = {
+    noResultsMessage: 'No se encontraron resultados',
+    isLoading: false,
+    results: [],
+    value: '',
   };
-
-  static propTypes = {
-    onSelect: PropTypes.func.isRequired,
-    placeholder: PropTypes.string,
-  };
-
-  state = { noResultsMessage: 'No se encontraron resultados' };
-
-  componentWillMount() {
-    this.resetComponent();
-  }
 
   resetComponent = () =>
     this.setState({ isLoading: false, results: [], value: '' });
@@ -140,5 +132,13 @@ class SearchInput extends Component {
     );
   }
 }
+SearchInput.defaultProps = {
+  placeholder: '',
+};
+
+SearchInput.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+};
 
 export default SearchInput;

@@ -15,7 +15,13 @@ import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 
 // Semantic
-import { Segment, Header, Select, Responsive, Icon } from 'semantic-ui-react';
+import {
+  Segment,
+  Header,
+  Select,
+  Responsive,
+  Icon as SemanticIcon,
+} from 'semantic-ui-react';
 
 // Redux
 import { makeSelectRouteResults } from '../Map/selectors';
@@ -36,6 +42,7 @@ const MainContainer = styled.div`
   max-width: 350px;
   background: transparent;
   @media (max-width: 767px) {
+    position: fixed;
     top: auto;
     bottom: 0;
     right: 0;
@@ -89,6 +96,9 @@ const ToggleArrow = styled.div`
   background-color: white;
 `;
 
+// eslint-disable-next-line react/prop-types
+const Icon = ({ active, ...props }) => <SemanticIcon {...props} />;
+
 const ArrowIcon = styled(Icon)`
   &&& {
     transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -107,11 +117,6 @@ const categoryOptions = [
 const { breakpointsDown } = theme;
 
 class SearchModal extends React.PureComponent {
-  static propTypes = {
-    searchRoute: PropTypes.func.isRequired,
-    routeResults: PropTypes.object.isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.resultsBox = React.createRef();
@@ -293,6 +298,10 @@ class SearchModal extends React.PureComponent {
     );
   }
 }
+SearchModal.propTypes = {
+  searchRoute: PropTypes.func.isRequired,
+  routeResults: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = createStructuredSelector({
   routeResults: makeSelectRouteResults(),

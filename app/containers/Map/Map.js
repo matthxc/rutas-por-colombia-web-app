@@ -25,13 +25,6 @@ import { setTouristAttraction } from '../TouristAttraction/actions';
 const { breakpointsDown, breakpointsUp } = theme;
 
 class Map extends React.PureComponent {
-  static propTypes = {
-    searchParameters: PropTypes.object.isRequired,
-    setRouteResults: PropTypes.func.isRequired,
-    viewTouristAttraction: PropTypes.func.isRequired,
-    setTouristAttraction: PropTypes.func.isRequired,
-  };
-
   state = {
     lat: 4.6758818,
     lng: -74.1535071,
@@ -93,6 +86,12 @@ class Map extends React.PureComponent {
     );
   }
 }
+Map.propTypes = {
+  searchParameters: PropTypes.object.isRequired,
+  setRouteResults: PropTypes.func.isRequired,
+  viewTouristAttraction: PropTypes.func.isRequired,
+  setTouristAttraction: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = createStructuredSelector({
   searchParameters: makeSelectSearch(),

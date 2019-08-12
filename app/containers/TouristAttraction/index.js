@@ -26,17 +26,6 @@ import { Drawer } from './styles/TouristAttraction';
 
 /* eslint-disable react/prefer-stateless-function */
 class TouristAttraction extends React.Component {
-  static defaultProps = {
-    visible: false,
-    close: () => {},
-  };
-
-  static propTypes = {
-    touristAttraction: PropTypes.object.isRequired,
-    visible: PropTypes.bool,
-    close: PropTypes.func,
-  };
-
   renderActivities = activities =>
     activities.map((activity, counter) => (
       <Tag color="#0052b4" key={counter}>
@@ -64,22 +53,18 @@ class TouristAttraction extends React.Component {
         </Drawer>
       );
     }
-    console.log(touristAttraction);
+
     const { name, description, activities, images, phone } = touristAttraction;
     return (
       <Drawer
-        title={
-          <Header type="h3" uppercase>
-            {name}
-          </Header>
-        }
+        title={<h3>{name}</h3>}
         placement="right"
         onClose={this.props.close}
         visible={visible}
         destroyOnClose
         width="100%"
       >
-        <React.Fragment>
+        <>
           <Carousel centered images={images} imageSource="api" />
           <Segment basic>
             <Row gutter={24} padded>
@@ -100,11 +85,21 @@ class TouristAttraction extends React.Component {
             </Header>
             <p>{description}</p>
           </Segment>
-        </React.Fragment>
+        </>
       </Drawer>
     );
   }
 }
+TouristAttraction.defaultProps = {
+  visible: false,
+  close: () => {},
+};
+
+TouristAttraction.propTypes = {
+  touristAttraction: PropTypes.object.isRequired,
+  visible: PropTypes.bool,
+  close: PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({
   touristAttraction: makeSelectTouristAttraction(),

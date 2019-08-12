@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import endpoints from 'config/endpoints.json';
+import endpoints from 'config/endpoints';
 
 // Antd
 import Spin from 'antd/lib/spin';
@@ -20,17 +20,6 @@ const antIcon = (
 
 export default Component => {
   class ImageLoader extends React.Component {
-    static defaultProps = {
-      src: null,
-      source: 'external',
-    };
-
-    static propTypes = {
-      src: PropTypes.string,
-      alt: PropTypes.string.isRequired,
-      source: PropTypes.string,
-    };
-
     isMounted = false;
 
     constructor(props) {
@@ -57,6 +46,7 @@ export default Component => {
       const { src } = this.props;
       if (src) {
         if (src !== prevProps.src) {
+          // eslint-disable-next-line react/no-did-update-set-state
           this.setState({ loading: true, url: src });
         }
       }
@@ -75,7 +65,7 @@ export default Component => {
       const { loading, url } = this.state;
       const { src, ...props } = this.props;
       return (
-        <React.Fragment>
+        <>
           <CSSTransition
             in={!loading}
             timeout={300}
@@ -98,10 +88,21 @@ export default Component => {
               <Spin indicator={antIcon} />
             </LoaderContainer>
           )}
-        </React.Fragment>
+        </>
       );
     }
   }
+
+  ImageLoader.defaultProps = {
+    src: null,
+    source: 'external',
+  };
+
+  ImageLoader.propTypes = {
+    src: PropTypes.string,
+    alt: PropTypes.string.isRequired,
+    source: PropTypes.string,
+  };
 
   return ImageLoader;
 };

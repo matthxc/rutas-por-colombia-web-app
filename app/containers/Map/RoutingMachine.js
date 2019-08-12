@@ -5,6 +5,7 @@ import 'leaflet-routing-machine';
 import { withLeaflet, MapComponent, LeafletProvider } from 'react-leaflet';
 import { isEmpty, isEqual } from 'lodash';
 import api from 'config/axiosInstance';
+import endpoints from 'config/endpoints';
 
 // Ant
 import message from 'antd/lib/message';
@@ -24,28 +25,12 @@ import flagShadow from 'images/flag-shadow.png';
 const moneyFormatter = new FormatMoney();
 
 class RoutingMachine extends MapComponent {
-  static defaultProps = {
-    locationFrom: {},
-    locationTo: {},
-    category: 0,
-    onRouteResultsFound: () => {},
-    setTouristAttractionInfo: () => {},
-  };
-
-  static propTypes = {
-    locationFrom: PropTypes.object,
-    locationTo: PropTypes.object,
-    category: PropTypes.number,
-    onRouteResultsFound: PropTypes.func,
-    setTouristAttractionInfo: PropTypes.func,
-  };
-
   constructor(props) {
     super(props);
     const router = Routing.control({
-      router: Routing.mapbox(
-        'pk.eyJ1IjoibWF0dGh4YyIsImEiOiJjam8zdzAwb2IwOHVjM3Fuc2FrMDQ1d3diIn0.Hdg2Zlt6Iamw0eiirwl86g',
-      ),
+      fitSelectedRoutes: true,
+      show: false,
+      router: Routing.mapbox(endpoints.MAPBOX_TOKEN),
       plan: Routing.plan([], {
         createMarker(i, wp) {
           return marker(wp.latLng, {
@@ -63,7 +48,7 @@ class RoutingMachine extends MapComponent {
         },
       }),
     }).addTo(this.props.leaflet.map);
-    router.hide();
+    this.onWaypointsChanged(router);
     this.onRouteFound(router);
     this.onRouteError(router);
 
@@ -135,6 +120,16 @@ class RoutingMachine extends MapComponent {
         loading: true,
       });
       const { category } = this.props;
+      /*
+      const shortestRoute = routes.reduce(
+        (minRoute, route) =>
+          route.summary.totalDistance < minRoute.summary.totalDistance
+            ? route
+            : minRoute,
+        routes[0],
+      );
+      */
+
       const {
         coordinates,
         summary: { totalDistance, totalTime },
@@ -175,9 +170,7 @@ class RoutingMachine extends MapComponent {
             ? `<h4>Nombre: <span class="regular">${toll.name}</span></h4>`
             : '';
           const state = toll.state
-            ? `<h4>Departamento: <span class="regular">${
-                toll.state
-              }</span></h4>`
+            ? `<h4>Departamento: <span class="regular">${toll.state}</span></h4>`
             : '';
           const phone = toll.phone
             ? `<h4>Teléfono: <span class="regular">${toll.phone}</span></h4>`
@@ -242,7 +235,7 @@ class RoutingMachine extends MapComponent {
   };
 
   onRouteError = router => {
-    router.on('routingerror', async ({ error: { target: { response } } }) => {
+    router.on('routingerror', ({ error: { target: { response } } }) => {
       const { code } = JSON.parse(response);
       if (code === 'NoRoute') {
         notification.error({
@@ -258,6 +251,12 @@ class RoutingMachine extends MapComponent {
     });
   };
 
+  onWaypointsChanged = router => {
+    router.on('waypointschanged', () => {
+      this.initRouting();
+    });
+  };
+
   render() {
     const { children } = this.props;
     return children == null || this.contextValue == null ? null : (
@@ -265,5 +264,20 @@ class RoutingMachine extends MapComponent {
     );
   }
 }
+RoutingMachine.defaultProps = {
+  locationFrom: {},
+  locationTo: {},
+  category: 0,
+  onRouteResultsFound: () => {},
+  setTouristAttractionInfo: () => {},
+};
+
+RoutingMachine.propTypes = {
+  locationFrom: PropTypes.object,
+  locationTo: PropTypes.object,
+  category: PropTypes.number,
+  onRouteResultsFound: PropTypes.func,
+  setTouristAttractionInfo: PropTypes.func,
+};
 
 export default withLeaflet(RoutingMachine);

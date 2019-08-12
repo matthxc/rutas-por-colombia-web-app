@@ -9,6 +9,9 @@ const selectSearchDomain = state =>
   state.get('searchParameters', initialSearchState);
 
 const makeSelectSearch = () =>
-  createSelector(selectSearchDomain, substate => substate.toJS());
+  createSelector(
+    selectSearchDomain,
+    substate => substate.toJS(),
+  );
 
 export { selectSearchDomain, makeSelectSearch };

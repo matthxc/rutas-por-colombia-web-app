@@ -33,11 +33,11 @@ const ContentLoader = ({
     </Container>
   );
   return (
-    <React.Fragment>
+    <>
       {state !== 'PENDING' && !isEmpty && (component || render())}
       {!loading && state === 'SUCCESS' && isEmpty && renderEmpty()}
       {loading && <Container>{renderContentLoader(true)}</Container>}
-    </React.Fragment>
+    </>
   );
 };
 
