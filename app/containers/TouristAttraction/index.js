@@ -65,7 +65,7 @@ class TouristAttraction extends React.Component {
         width="100%"
       >
         <>
-          <Carousel centered images={images} imageSource="api" />
+          <Carousel centered images={images} />
           <Segment basic>
             <Row gutter={24} padded>
               <Col xs={24} md={12}>

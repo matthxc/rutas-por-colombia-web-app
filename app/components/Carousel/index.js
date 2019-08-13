@@ -17,25 +17,6 @@ import { Container, Carousel } from './styles/Carousel';
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable react/no-array-index-key */
 class CarouselComponent extends React.Component {
-  static defaultProps = {
-    width: '100%',
-    height: 'auto',
-    centered: false,
-    aspectRatio: '21:9',
-    imageSource: 'external',
-  };
-
-  static propTypes = {
-    width: PropTypes.string,
-    height: PropTypes.string,
-    centered: PropTypes.bool,
-    images: PropTypes.array.isRequired,
-    aspectRatio: PropTypes.string,
-    className: PropTypes.string,
-    style: PropTypes.object,
-    imageSource: PropTypes.string,
-  };
-
   settings = {
     dots: true,
     arrows: false,
@@ -105,5 +86,23 @@ class CarouselComponent extends React.Component {
     );
   }
 }
+CarouselComponent.defaultProps = {
+  width: '100%',
+  height: 'auto',
+  centered: false,
+  aspectRatio: '21:9',
+  imageSource: 'external',
+};
+
+CarouselComponent.propTypes = {
+  width: PropTypes.string,
+  height: PropTypes.string,
+  centered: PropTypes.bool,
+  images: PropTypes.array.isRequired,
+  aspectRatio: PropTypes.string,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  imageSource: PropTypes.string,
+};
 
 export default CarouselComponent;
