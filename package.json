@@ -79,7 +79,7 @@
     "leaflet-control-geocoder": "^1.8.3",
     "leaflet-routing-machine": "^3.2.12",
     "loadable-components": "^2.2.3",
-    "lodash": "4.17.15",
+    "lodash": "4.17.21",
     "memoizee": "^0.4.14",
     "minimist": "1.2.0",
     "normalize.css": "^8.0.1",
